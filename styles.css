@@ -1,0 +1,239 @@
+/* CSS Variables - Thai-inspired color scheme */
+:root {
+    --primary: #1a5f4a;      /* Deep green */
+    --primary-light: #2d8a6e;
+    --secondary: #c9a227;    /* Gold accent */
+    --bg: #f5f3ef;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-light: #6b7c8a;
+    --border: #e0ddd5;
+    --phase2-bg: #e8f4f0;
+    --phase3-bg: #f0ebe3;
+}
+
+/* Reset & Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.intro {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1rem;
+    opacity: 0.95;
+    line-height: 1.7;
+}
+
+/* Main Content */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Phase Sections */
+.phase {
+    margin-bottom: 2.5rem;
+}
+
+.phase h2 {
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--secondary);
+    display: inline-block;
+}
+
+.phase-desc {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+/* Feature Cards (Phase 1) */
+.feature-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+}
+
+.feature-card h3 {
+    color: var(--primary);
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-desc {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.feature-card textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.feature-card textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.feature-card textarea::placeholder {
+    color: #a0a8b0;
+}
+
+.general-feedback {
+    border: 2px solid var(--secondary);
+    background: linear-gradient(to bottom right, #fffef8, var(--card-bg));
+}
+
+/* Phase 2 & 3 Lists */
+.phase-2 {
+    background: var(--phase2-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.phase-3 {
+    background: var(--phase3-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list strong {
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.feature-list span {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 1rem;
+}
+
+.note {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(26, 95, 74, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 95, 74, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    header {
+        padding: 2rem 1rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .intro {
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 1.5rem 0.75rem;
+    }
+
+    .feature-card {
+        padding: 1.25rem;
+    }
+
+    .phase-2, .phase-3 {
+        padding: 1.25rem;
+    }
+}

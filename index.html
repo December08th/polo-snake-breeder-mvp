@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyThrone MVP - Snake Breeder Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>PyThrone MVP</h1>
+        <p class="subtitle">Snake Breeder Management System</p>
+        <p class="intro">Hi Polo! Please review the Phase 1 features below and share your feedback, questions, or suggestions for each one. Your input will help shape the final product.</p>
+    </header>
+
+    <main>
+        <form name="mvp-feedback" method="POST" data-netlify="true" action="/submitted.html">
+            <input type="hidden" name="form-name" value="mvp-feedback">
+
+            <section class="phase phase-1">
+                <h2>Phase 1 Features</h2>
+                <p class="phase-desc">These features will be built first. Please provide feedback for each.</p>
+
+                <div class="feature-card">
+                    <h3>Snake Profiles</h3>
+                    <p class="feature-desc">Add snakes with photo, sex, morph, genetics, date of birth, weight, and notes. Each snake gets a complete profile page.</p>
+                    <label for="feedback-profiles">Your feedback:</label>
+                    <textarea id="feedback-profiles" name="feedback-profiles" rows="4" placeholder="Any questions, suggestions, or specific needs for snake profiles?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Collection View</h3>
+                    <p class="feature-desc">View your entire collection in list or grid format. Search by name, filter by sex, morph, or breeding status.</p>
+                    <label for="feedback-collection">Your feedback:</label>
+                    <textarea id="feedback-collection" name="feedback-collection" rows="4" placeholder="How would you like to organize and view your collection?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Feeding Log</h3>
+                    <p class="feature-desc">Record each feeding with date, prey type, and size. Track refusals and see days since last meal for each snake.</p>
+                    <label for="feedback-feeding">Your feedback:</label>
+                    <textarea id="feedback-feeding" name="feedback-feeding" rows="4" placeholder="What feeding details are most important to track?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Weight Log</h3>
+                    <p class="feature-desc">Record weights over time with a basic chart showing growth trends for each snake.</p>
+                    <label for="feedback-weight">Your feedback:</label>
+                    <textarea id="feedback-weight" name="feedback-weight" rows="4" placeholder="How often do you weigh your snakes? Any specific metrics you want to see?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Pairing Manager</h3>
+                    <p class="feature-desc">Create breeding pairs, log lock dates, and track breeding attempts between snakes.</p>
+                    <label for="feedback-pairing">Your feedback:</label>
+                    <textarea id="feedback-pairing" name="feedback-pairing" rows="4" placeholder="What information do you track for breeding pairs?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Clutch Tracker</h3>
+                    <p class="feature-desc">Record clutches with egg counts, lay dates, and automatic hatch countdown timer.</p>
+                    <label for="feedback-clutch">Your feedback:</label>
+                    <textarea id="feedback-clutch" name="feedback-clutch" rows="4" placeholder="What clutch details matter most to you?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Basic Genetics</h3>
+                    <p class="feature-desc">Display morph traits and het markers for each snake. Visual genetics notation.</p>
+                    <label for="feedback-genetics">Your feedback:</label>
+                    <textarea id="feedback-genetics" name="feedback-genetics" rows="4" placeholder="How do you currently track genetics? Any specific display preferences?"></textarea>
+                </div>
+
+                <div class="feature-card general-feedback">
+                    <h3>General Feedback</h3>
+                    <p class="feature-desc">Any other thoughts, priorities, or features you'd like to discuss?</p>
+                    <label for="feedback-general">Your feedback:</label>
+                    <textarea id="feedback-general" name="feedback-general" rows="4" placeholder="Anything else on your mind?"></textarea>
+                </div>
+            </section>
+
+            <section class="phase phase-2">
+                <h2>Phase 2 Preview</h2>
+                <p class="phase-desc">Coming after Phase 1 is complete and approved.</p>
+                <ul class="feature-list">
+                    <li>
+                        <strong>Genetics Calculator</strong>
+                        <span>Predict offspring outcomes from pairings</span>
+                    </li>
+                    <li>
+                        <strong>Family Tree / Pedigree</strong>
+                        <span>Visual lineage tracking</span>
+                    </li>
+                    <li>
+                        <strong>Shed Tracking</strong>
+                        <span>Log shed dates and cycles</span>
+                    </li>
+                    <li>
+                        <strong>Public Breeder Profile</strong>
+                        <span>Shareable page showcasing your collection</span>
+                    </li>
+                    <li>
+                        <strong>Waitlist System</strong>
+                        <span>Manage interested buyers</span>
+                    </li>
+                    <li>
+                        <strong>Multi-language Support</strong>
+                        <span>Thai and English interfaces</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="phase phase-3">
+                <h2>Phase 3 Preview</h2>
+                <p class="phase-desc">Future marketplace features.</p>
+                <ul class="feature-list">
+                    <li>
+                        <strong>Marketplace Listings</strong>
+                        <span>List snakes for sale</span>
+                    </li>
+                    <li>
+                        <strong>Payment Processing</strong>
+                        <span>Secure transactions</span>
+                    </li>
+                    <li>
+                        <strong>Shipping Integration</strong>
+                        <span>Coordinate deliveries</span>
+                    </li>
+                    <li>
+                        <strong>Buyer Messaging</strong>
+                        <span>In-app communication</span>
+                    </li>
+                </ul>
+            </section>
+
+            <footer>
+                <p class="note">Phase 2 & 3 will begin after Phase 1 is complete and approved.</p>
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </footer>
+        </form>
+    </main>
+</body>
+</html>
