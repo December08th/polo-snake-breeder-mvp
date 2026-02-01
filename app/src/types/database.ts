@@ -18,6 +18,7 @@ export type InheritanceType = 'DOMINANT' | 'CO_DOMINANT' | 'RECESSIVE'
 
 export interface Snake {
   id: string
+  user_id: string
   snake_number: number
   name: string | null
   sex: 'M' | 'F' | null
@@ -41,6 +42,7 @@ export interface Snake {
 
 export interface WeightLog {
   id: string
+  user_id: string
   snake_id: string
   weight_grams: number
   recorded_at: string
@@ -50,6 +52,7 @@ export interface WeightLog {
 
 export interface FeedingLog {
   id: string
+  user_id: string
   snake_id: string
   fed_at: string
   accepted: boolean
@@ -59,6 +62,7 @@ export interface FeedingLog {
 
 export interface Pairing {
   id: string
+  user_id: string
   female_id: string
   pairing_start: string | null
   ovulation_date: string | null
@@ -71,6 +75,7 @@ export interface Pairing {
 
 export interface PairingMale {
   id: string
+  user_id: string
   pairing_id: string
   male_id: string
   lock_count: number
@@ -80,6 +85,7 @@ export interface PairingMale {
 
 export interface FollicleCheck {
   id: string
+  user_id: string
   pairing_id: string
   checked_at: string
   follicle_size_mm: number | null
@@ -90,6 +96,7 @@ export interface FollicleCheck {
 
 export interface Clutch {
   id: string
+  user_id: string
   clutch_number: string
   pairing_id: string | null
   lay_date: string | null

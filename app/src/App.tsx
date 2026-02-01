@@ -1,18 +1,26 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
+import { useAuth } from './contexts/AuthContext'
+import { Auth } from './components/Auth'
 import { AddSnakeForm } from './components/AddSnakeForm'
 import type { Snake } from './types/database'
 import './App.css'
 
 function App() {
+  const { user, loading: authLoading, signOut } = useAuth()
   const [snakes, setSnakes] = useState<Snake[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
 
   useEffect(() => {
-    fetchSnakes()
-  }, [])
+    if (user) {
+      fetchSnakes()
+    } else {
+      setSnakes([])
+      setLoading(false)
+    }
+  }, [user])
 
   async function fetchSnakes() {
     try {
@@ -35,14 +43,24 @@ function App() {
     fetchSnakes()
   }
 
+  if (authLoading) return <div className="loading">Loading...</div>
+  if (!user) return <Auth />
   if (loading) return <div className="loading">Loading...</div>
   if (error) return <div className="error">Error: {error}</div>
 
   return (
     <div className="app">
       <header>
-        <h1>PyThrone</h1>
-        <p>Snake Breeder Management</p>
+        <div className="header-content">
+          <div className="header-title">
+            <h1>PyThrone</h1>
+            <p>Snake Breeder Management</p>
+          </div>
+          <div className="header-user">
+            <span className="user-email">{user.email}</span>
+            <button className="btn-logout" onClick={signOut}>Log out</button>
+          </div>
+        </div>
       </header>
 
       <main>
@@ -80,6 +98,7 @@ function App() {
 
       {showAddForm && (
         <AddSnakeForm
+          userId={user.id}
           onSuccess={handleAddSuccess}
           onCancel={() => setShowAddForm(false)}
         />

@@ -4,11 +4,12 @@ import type { SnakeStatus, RackSize } from '../types/database'
 import './AddSnakeForm.css'
 
 interface AddSnakeFormProps {
+  userId: string
   onSuccess: () => void
   onCancel: () => void
 }
 
-export function AddSnakeForm({ onSuccess, onCancel }: AddSnakeFormProps) {
+export function AddSnakeForm({ userId, onSuccess, onCancel }: AddSnakeFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -37,6 +38,7 @@ export function AddSnakeForm({ onSuccess, onCancel }: AddSnakeFormProps) {
 
     try {
       const { error } = await supabase.from('snakes').insert({
+        user_id: userId,
         name: formData.name || null,
         sex: formData.sex || null,
         morph: formData.morph || null,
