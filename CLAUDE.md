@@ -9,151 +9,162 @@
 
 ---
 
-## Completed Work (Session: 01 Feb 2026)
-
-### Phase 1: Planning & Requirements
-- [x] MVP feedback form with Phase 1, 2, 3 feature descriptions
-- [x] Dark theme with green/gold accents
-- [x] Form auto-save to localStorage
-- [x] Navigation warning on unsaved changes
-- [x] REQUIREMENTS.md created with full Phase 1 specs
-- [x] Received and analyzed Polo's Google Sheet screenshots (3 images)
-
-### Phase 2: Database & Backend
-- [x] Chose tech stack: Supabase + React
-- [x] Created SCHEMA.md with full database design (8 tables)
-- [x] Created supabase-migration.sql
-- [x] Set up Supabase project (free tier)
-- [x] Ran database migration (all tables created)
-- [x] Fixed RLS policies for anonymous access (MVP)
-
-### Phase 3: React App
-- [x] Scaffolded React + TypeScript app with Vite (`/app` folder)
-- [x] Installed @supabase/supabase-js
-- [x] Created Supabase client (`src/lib/supabase.ts`)
-- [x] Created TypeScript types (`src/types/database.ts`)
-- [x] Built Snake Collection view (grid layout, dark theme)
-- [x] Built Add Snake form (modal, all fields)
-- [x] **First snake added successfully!**
-
----
-
 ## Tech Stack
-- **Frontend:** React 18 + TypeScript + Vite
+- **Frontend:** React 19 + TypeScript + Vite
 - **Backend:** Supabase (PostgreSQL + Auth + Storage)
 - **Hosting:** Netlify (frontend), Supabase Cloud (backend)
 
-## Database Tables
-1. snakes - Core snake profiles
-2. weight_logs - Weight tracking
-3. feeding_logs - Feeding records (simplified)
-4. pairings - Breeding pairs
-5. pairing_males - Junction for dual-sired
-6. follicle_checks - Ultrasound tracking
-7. clutches - Egg/hatch tracking
-8. morphs - Reference data (seeded)
+---
+
+## Current State (as of 01 Feb 2026)
+
+### What's Working
+- User authentication (email/password signup & login)
+- Email confirmation flow for new signups
+- Per-user data isolation via RLS policies
+- Snake collection view (grid layout, dark theme)
+- Add Snake form with all fields
+- Live deployment at https://polo-snake-mvp.netlify.app
+
+### Database Schema
+All tables have `user_id` column for multi-tenancy:
+1. **snakes** - Core snake profiles (name, sex, morph, weight, status, price, etc.)
+2. **weight_logs** - Weight tracking history
+3. **feeding_logs** - Feeding records
+4. **pairings** - Breeding pairs (female + status + dates)
+5. **pairing_males** - Junction table for dual-sired pairings
+6. **follicle_checks** - Ultrasound tracking
+7. **clutches** - Egg/hatch tracking
+8. **morphs** - Reference data (global, seeded with common morphs)
+
+### Key Files
+- `app/src/App.tsx` - Main app with auth gate
+- `app/src/contexts/AuthContext.tsx` - Session management
+- `app/src/components/Auth.tsx` - Login/signup form
+- `app/src/components/AddSnakeForm.tsx` - Snake creation form
+- `app/src/types/database.ts` - TypeScript interfaces
+- `supabase/migrations/` - Database migrations
 
 ---
 
-## Polo's Feedback (Jan 2026)
+## Completed Work
+
+### Session 1 (01 Feb 2026 - Morning)
+- [x] MVP feedback form
+- [x] REQUIREMENTS.md with Phase 1 specs
+- [x] SCHEMA.md with database design
+- [x] Supabase project setup
+- [x] Initial database migration
+- [x] React app scaffold
+- [x] Snake collection view + Add Snake form
+
+### Session 2 (01 Feb 2026 - Afternoon)
+- [x] **Multi-tenancy & Auth implementation**
+  - Added `user_id` columns to 7 tables
+  - Created RLS policies for data isolation
+  - Built custom Auth component (login/signup)
+  - Added AuthContext for session management
+  - Updated all forms to include `user_id`
+- [x] Supabase CLI setup for migrations
+- [x] Pushed migrations to cloud Supabase
+- [x] Netlify environment variables configured
+- [x] Production deployment working
+
+---
+
+## Next Steps (Priority Order)
+
+### 1. Collection View Enhancements
+- Group snakes by status (Male Breeders, Female Breeders, Holdbacks, For Sale)
+- Sort by weight within groups
+- Add edit/delete functionality for snakes
+
+### 2. Weight Logging
+- Add weight log form (per snake)
+- Display weight history
+- Basic growth trend chart
+
+### 3. Feeding Log (Low Priority)
+- Simple "fed today" button
+- Track refusals
+- Show "days since last meal"
+
+### 4. Pairing Manager (Key Feature)
+- Create pairing (female + male(s))
+- Track lock dates and counts
+- Follicle check logging with size in mm
+- Auto-calculate next check date based on follicle size
+- Track ovulation date and Pre-Lay Shed (PLS)
+
+### 5. Clutch Tracker
+- Link clutch to pairing
+- Track lay date, egg counts (fertile/slug/kink)
+- Hatch countdown (57 days from lay)
+
+---
+
+## Environment Setup
+
+### Local Development
+```bash
+cd C:\dev\polo-snake-breeder-mvp\app
+npm install
+npm run dev
+```
+
+### Environment Variables
+Already configured in:
+- `app/.env` - Local development (points to cloud Supabase)
+- Netlify dashboard - Production deployment
+
+### Supabase CLI (for migrations)
+```bash
+# Login (run in your terminal, not through Claude)
+npx supabase login
+
+# Link to project
+npx supabase link --project-ref guqxoychegqxreywfinv
+
+# Push new migrations
+npx supabase db push
+```
+
+Note: Docker Desktop required for local Supabase (`supabase start`), but virtualization must be enabled in BIOS. Cloud-based development works without Docker.
+
+---
+
+## Polo's Requirements Summary
 
 ### Snake Profiles
-- Current plan is good
-- **Add:** Price field for snakes marked "for sale"
+- Name, sex, morph, genetics, DOB, weight, status, rack size, price, notes
+- Photo support (future)
 
-### Collection View
-- **Groups:** Male breeders, Female breeders, Holdbacks, For Sale
-- **Sort:** Rank by weight within each group
+### Collection View Groups
+- Male Breeders, Female Breeders, Holdbacks, For Sale
+- Sorted by weight within groups
 
-### Feeding Log
-- **LOW PRIORITY** - Polo finds detailed logging too time-consuming
-- Only tracks refusals and "days since last meal"
-- Consider simplified approach or making this optional
-
-### Weight Log
-- Records weight after each shed (~every 6 weeks)
-- Basic growth trend chart needed
-
-### Pairing Manager (ENHANCED - key feature)
-- Track pairings, breeding attempts, and locks
-- Goal: 1-2 locks per month per female
-- **Follicle tracking is critical:**
-  - Record follicle size in mm
-  - Ultrasound schedule:
-    - Monthly when follicles <20mm
-    - Biweekly when >20mm
-    - Weekly when >30mm until ovulation
-  - Track ovulation date
+### Pairing Manager (Critical)
+- Follicle tracking with ultrasound schedule:
+  - Monthly when <20mm
+  - Biweekly when >20mm
+  - Weekly when >30mm until ovulation
+- Track Pre-Lay Shed (PLS) date
 
 ### Clutch Tracker
-- Egg count (fertile)
-- Slug count (infertile eggs)
-- Lay date + Hatch date with countdown
-- **Polo will send Google Sheet screenshots** for reference
-
-### Basic Genetics
-- Three inheritance types: Dominant, Co-dominant, Recessive
-- Need visual notation system
+- Egg counts, hatch countdown, link offspring to clutch
 
 ---
 
-## Next Priority: Multi-Tenancy & Auth
+## Credentials & Access
 
-**IMPORTANT:** Add user authentication BEFORE building more features.
+### Supabase
+- Project: guqxoychegqxreywfinv
+- Dashboard: https://supabase.com/dashboard/project/guqxoychegqxreywfinv
+- API URL: https://guqxoychegqxreywfinv.supabase.co
 
-### Why Now
-- Database is nearly empty (1 test snake) - easy to add `user_id` columns
-- Retrofitting multi-tenancy later is painful (touches every table, query, policy)
-- Supabase has built-in auth - infrastructure is ready
-- Cost compounds with each new feature built without it
+### Netlify
+- Site: polo-snake-mvp
+- Dashboard: https://app.netlify.com/sites/polo-snake-mvp
 
-### Implementation Steps
-1. Add `user_id UUID REFERENCES auth.users(id)` to all user-owned tables
-2. Update RLS policies to filter by `auth.uid()`
-3. Add Supabase Auth UI (login/signup)
-4. Update React app to require authentication
-5. Include `user_id` in all insert operations
-
-### Tables Needing user_id
-- snakes
-- weight_logs
-- feeding_logs
-- pairings
-- pairing_males
-- follicle_checks
-- clutches
-- (morphs stays global - reference data)
-
----
-
-## Completed
-- [x] Create REQUIREMENTS.md with structured specs
-- [x] Received Polo's Google Sheet screenshots (Snake Room, Incubator, For Sale)
-- [x] Link Netlify to GitHub repo (auto-deploy enabled)
-- [x] Choose tech stack: Supabase + React
-- [x] Create SCHEMA.md with database design
-- [x] Create Supabase project (guqxoychegqxreywfinv)
-- [x] Set up React app scaffold
-- [x] Build Snake Profiles CRUD (Add + View working)
-
----
-
-## Google Sheet Screenshots (received 01 Feb 2026)
-
-### 1. Snake Room
-- Full collection inventory with ID, Name, Morph, Weight, Status, Price
-- Organized by rack size (XL/L/S)
-- Summary totals and rack occupancy
-
-### 2. Incubator
-- Clutch tracking with pairing, ovulation, PLS, lay, hatch dates
-- Egg counts, kink tracking, remarks
-- Key metrics calculated (Ovi→Lay, PLS→Lay averages)
-
-### 3. For Sale
-- Sales listing with bulk discount tiers
-- 25% deposit system, sale readiness requirements
-- NGU ART branding with contact info
-
-### Key Addition from Polo
-- **Pre-Lay Shed (PLS) date is important** - must be tracked in Pairing Manager
+### GitHub
+- Repo: December08th/polo-snake-breeder-mvp
