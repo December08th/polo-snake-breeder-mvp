@@ -97,15 +97,44 @@
 
 ---
 
-## Pending
+## Next Priority: Multi-Tenancy & Auth
+
+**IMPORTANT:** Add user authentication BEFORE building more features.
+
+### Why Now
+- Database is nearly empty (1 test snake) - easy to add `user_id` columns
+- Retrofitting multi-tenancy later is painful (touches every table, query, policy)
+- Supabase has built-in auth - infrastructure is ready
+- Cost compounds with each new feature built without it
+
+### Implementation Steps
+1. Add `user_id UUID REFERENCES auth.users(id)` to all user-owned tables
+2. Update RLS policies to filter by `auth.uid()`
+3. Add Supabase Auth UI (login/signup)
+4. Update React app to require authentication
+5. Include `user_id` in all insert operations
+
+### Tables Needing user_id
+- snakes
+- weight_logs
+- feeding_logs
+- pairings
+- pairing_males
+- follicle_checks
+- clutches
+- (morphs stays global - reference data)
+
+---
+
+## Completed
 - [x] Create REQUIREMENTS.md with structured specs
 - [x] Received Polo's Google Sheet screenshots (Snake Room, Incubator, For Sale)
 - [x] Link Netlify to GitHub repo (auto-deploy enabled)
 - [x] Choose tech stack: Supabase + React
 - [x] Create SCHEMA.md with database design
-- [ ] Create Supabase project
-- [ ] Set up React app scaffold
-- [ ] Build Snake Profiles CRUD
+- [x] Create Supabase project (guqxoychegqxreywfinv)
+- [x] Set up React app scaffold
+- [x] Build Snake Profiles CRUD (Add + View working)
 
 ---
 
