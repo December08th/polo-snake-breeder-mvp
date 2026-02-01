@@ -1,0 +1,129 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  padding: 40px 20px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: #4ade80;
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+header p {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #ef4444;
+}
+
+.collection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.collection h2 {
+  color: #fbbf24;
+}
+
+.btn-add {
+  background: #4ade80;
+  color: #1a1a1a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-add:hover {
+  background: #22c55e;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background: #252525;
+  border-radius: 8px;
+}
+
+.snake-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.snake-card {
+  background: #252525;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #333;
+  transition: border-color 0.2s;
+}
+
+.snake-card:hover {
+  border-color: #4ade80;
+}
+
+.snake-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.snake-number {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #4ade80;
+}
+
+.snake-name {
+  font-size: 1.1rem;
+  color: #fbbf24;
+}
+
+.snake-details p {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.snake-details strong {
+  color: #888;
+  font-weight: 500;
+}
