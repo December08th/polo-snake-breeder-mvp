@@ -1,12 +1,4 @@
 [build]
   publish = "."
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  conditions = {Role = ["admin"]}
-
-# Form handling
-[build.processing]
-  skip_processing = false
+# Form handling is automatic with data-netlify="true"
