@@ -146,5 +146,96 @@
             </footer>
         </form>
     </main>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'pythrone-mvp-feedback-draft';
+            const form = document.querySelector('form[name="mvp-feedback"]');
+            const textareas = form.querySelectorAll('textarea');
+            let hasUnsavedChanges = false;
+
+            // Create draft saved indicator
+            const indicator = document.createElement('div');
+            indicator.className = 'draft-indicator';
+            indicator.textContent = 'Draft saved';
+            indicator.setAttribute('aria-live', 'polite');
+            document.body.appendChild(indicator);
+
+            // Restore saved data on page load
+            function restoreDraft() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        textareas.forEach(textarea => {
+                            if (data[textarea.name]) {
+                                textarea.value = data[textarea.name];
+                                hasUnsavedChanges = true;
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Error restoring draft:', e);
+                    }
+                }
+            }
+
+            // Save all textarea values to localStorage
+            function saveDraft() {
+                const data = {};
+                let hasContent = false;
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim()) {
+                        data[textarea.name] = textarea.value;
+                        hasContent = true;
+                    }
+                });
+
+                if (hasContent) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    hasUnsavedChanges = true;
+                    showIndicator();
+                } else {
+                    localStorage.removeItem(STORAGE_KEY);
+                    hasUnsavedChanges = false;
+                }
+            }
+
+            // Show draft saved indicator briefly
+            function showIndicator() {
+                indicator.classList.add('visible');
+                setTimeout(() => {
+                    indicator.classList.remove('visible');
+                }, 2000);
+            }
+
+            // Clear saved data
+            function clearDraft() {
+                localStorage.removeItem(STORAGE_KEY);
+                hasUnsavedChanges = false;
+            }
+
+            // Restore draft on page load
+            restoreDraft();
+
+            // Auto-save on input
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', saveDraft);
+            });
+
+            // Warn before leaving with unsaved changes
+            window.addEventListener('beforeunload', function(e) {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    return '';
+                }
+            });
+
+            // Clear draft on successful form submission
+            form.addEventListener('submit', function() {
+                clearDraft();
+            });
+        })();
+    </script>
 </body>
 </html>
