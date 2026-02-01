@@ -3,8 +3,38 @@ import { supabase } from './lib/supabase'
 import { useAuth } from './contexts/AuthContext'
 import { Auth } from './components/Auth'
 import { AddSnakeForm } from './components/AddSnakeForm'
-import type { Snake } from './types/database'
+import { EditSnakeForm } from './components/EditSnakeForm'
+import { SnakeCard } from './components/SnakeCard'
+import type { Snake, SnakeStatus } from './types/database'
 import './App.css'
+
+const STATUS_GROUPS: { status: SnakeStatus; label: string }[] = [
+  { status: 'F_BREEDER', label: 'Female Breeders' },
+  { status: 'M_BREEDER', label: 'Male Breeders' },
+  { status: 'F_HOLDBACK', label: 'Female Holdbacks' },
+  { status: 'M_HOLDBACK', label: 'Male Holdbacks' },
+  { status: 'F_AVAILABLE', label: 'Females Available' },
+  { status: 'M_AVAILABLE', label: 'Males Available' },
+  { status: 'ON_HOLD', label: 'On Hold' },
+]
+
+function groupSnakesByStatus(snakes: Snake[]): Map<SnakeStatus, Snake[]> {
+  const groups = new Map<SnakeStatus, Snake[]>()
+
+  for (const snake of snakes) {
+    const status = snake.status || 'ON_HOLD'
+    const group = groups.get(status) || []
+    group.push(snake)
+    groups.set(status, group)
+  }
+
+  // Sort each group by weight descending (nulls last)
+  for (const [, group] of groups) {
+    group.sort((a, b) => (b.weight_grams ?? -1) - (a.weight_grams ?? -1))
+  }
+
+  return groups
+}
 
 function App() {
   const { user, loading: authLoading, signOut } = useAuth()
@@ -12,6 +42,8 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [editingSnake, setEditingSnake] = useState<Snake | null>(null)
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(new Set())
 
   useEffect(() => {
     if (user) {
@@ -43,10 +75,29 @@ function App() {
     fetchSnakes()
   }
 
+  function handleEditSuccess() {
+    setEditingSnake(null)
+    fetchSnakes()
+  }
+
+  function toggleGroup(status: SnakeStatus) {
+    setCollapsedGroups(prev => {
+      const next = new Set(prev)
+      if (next.has(status)) {
+        next.delete(status)
+      } else {
+        next.add(status)
+      }
+      return next
+    })
+  }
+
   if (authLoading) return <div className="loading">Loading...</div>
   if (!user) return <Auth />
   if (loading) return <div className="loading">Loading...</div>
   if (error) return <div className="error">Error: {error}</div>
+
+  const groupedSnakes = groupSnakesByStatus(snakes)
 
   return (
     <div className="app">
@@ -75,23 +126,33 @@ function App() {
           {snakes.length === 0 ? (
             <p className="empty">No snakes yet. Add your first snake!</p>
           ) : (
-            <div className="snake-grid">
-              {snakes.map((snake) => (
-                <div key={snake.id} className="snake-card">
-                  <div className="snake-header">
-                    <span className="snake-number">#{snake.snake_number}</span>
-                    {snake.name && <span className="snake-name">{snake.name}</span>}
+            STATUS_GROUPS.map(({ status, label }) => {
+              const group = groupedSnakes.get(status)
+              if (!group || group.length === 0) return null
+
+              const isCollapsed = collapsedGroups.has(status)
+
+              return (
+                <div key={status} className="status-group">
+                  <div className="group-header" onClick={() => toggleGroup(status)}>
+                    <h3>{label}</h3>
+                    <span className="group-count">{group.length}</span>
+                    <span className={`group-toggle ${isCollapsed ? 'collapsed' : ''}`}>▼</span>
                   </div>
-                  <div className="snake-details">
-                    <p><strong>Sex:</strong> {snake.sex || '?'}</p>
-                    <p><strong>Morph:</strong> {snake.morph || 'Unknown'}</p>
-                    <p><strong>Weight:</strong> {snake.weight_grams ? `${snake.weight_grams}g` : '?'}</p>
-                    <p><strong>Status:</strong> {snake.status?.replace(/_/g, ' ') || 'Unknown'}</p>
-                    {snake.price && <p><strong>Price:</strong> ฿{snake.price.toLocaleString()}</p>}
-                  </div>
+                  {!isCollapsed && (
+                    <div className="snake-grid">
+                      {group.map((snake) => (
+                        <SnakeCard
+                          key={snake.id}
+                          snake={snake}
+                          onClick={() => setEditingSnake(snake)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
-            </div>
+              )
+            })
           )}
         </section>
       </main>
@@ -101,6 +162,14 @@ function App() {
           userId={user.id}
           onSuccess={handleAddSuccess}
           onCancel={() => setShowAddForm(false)}
+        />
+      )}
+
+      {editingSnake && (
+        <EditSnakeForm
+          snake={editingSnake}
+          onSuccess={handleEditSuccess}
+          onCancel={() => setEditingSnake(null)}
         />
       )}
     </div>
