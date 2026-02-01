@@ -1,0 +1,202 @@
+.clutch-form {
+  background: #252525;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+.clutch-form h2 {
+  color: #4ade80;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.clutch-form .form-error {
+  background: #3f1d1d;
+  color: #ef4444;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.clutch-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.clutch-form .form-row-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.clutch-form .form-group {
+  margin-bottom: 16px;
+}
+
+.clutch-form .form-group label {
+  display: block;
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+}
+
+.clutch-form .form-group input,
+.clutch-form .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.clutch-form .form-group input:focus,
+.clutch-form .form-group textarea:focus {
+  outline: none;
+  border-color: #4ade80;
+}
+
+.clutch-form .form-group input::placeholder,
+.clutch-form .form-group textarea::placeholder {
+  color: #666;
+}
+
+.clutch-form .form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.clutch-form .form-hint {
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.clutch-form .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.clutch-form .form-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clutch-form .btn-cancel {
+  background: #444;
+  color: #e0e0e0;
+}
+
+.clutch-form .btn-cancel:hover:not(:disabled) {
+  background: #555;
+}
+
+.clutch-form .btn-submit {
+  background: #4ade80;
+  color: #1a1a1a;
+}
+
+.clutch-form .btn-submit:hover:not(:disabled) {
+  background: #22c55e;
+}
+
+.clutch-form .btn-submit:disabled,
+.clutch-form .btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Delete section */
+.clutch-form .delete-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #333;
+  text-align: center;
+}
+
+.clutch-form .btn-delete {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clutch-form .btn-delete:hover:not(:disabled) {
+  background: #3f1d1d;
+}
+
+.clutch-form .btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clutch-form .delete-confirm {
+  text-align: center;
+}
+
+.clutch-form .delete-confirm p {
+  color: #ef4444;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.clutch-form .delete-confirm-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.clutch-form .btn-cancel-small {
+  background: #444;
+  color: #e0e0e0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clutch-form .btn-cancel-small:hover:not(:disabled) {
+  background: #555;
+}
+
+.clutch-form .btn-delete-confirm {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.clutch-form .btn-delete-confirm:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.clutch-form .btn-cancel-small:disabled,
+.clutch-form .btn-delete-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

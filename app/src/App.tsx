@@ -5,7 +5,10 @@ import { Auth } from './components/Auth'
 import { AddSnakeForm } from './components/AddSnakeForm'
 import { EditSnakeForm } from './components/EditSnakeForm'
 import { SnakeCard } from './components/SnakeCard'
-import type { Snake, SnakeStatus } from './types/database'
+import { ClutchCard } from './components/ClutchCard'
+import { AddClutchForm } from './components/AddClutchForm'
+import { EditClutchForm } from './components/EditClutchForm'
+import type { Snake, SnakeStatus, Clutch } from './types/database'
 import './App.css'
 
 const STATUS_GROUPS: { status: SnakeStatus; label: string }[] = [
@@ -39,17 +42,23 @@ function groupSnakesByStatus(snakes: Snake[]): Map<SnakeStatus, Snake[]> {
 function App() {
   const { user, loading: authLoading, signOut } = useAuth()
   const [snakes, setSnakes] = useState<Snake[]>([])
+  const [clutches, setClutches] = useState<Clutch[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [showAddClutchForm, setShowAddClutchForm] = useState(false)
   const [editingSnake, setEditingSnake] = useState<Snake | null>(null)
+  const [editingClutch, setEditingClutch] = useState<Clutch | null>(null)
   const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(new Set())
+  const [incubatorCollapsed, setIncubatorCollapsed] = useState(false)
 
   useEffect(() => {
     if (user) {
       fetchSnakes()
+      fetchClutches()
     } else {
       setSnakes([])
+      setClutches([])
       setLoading(false)
     }
   }, [user])
@@ -70,6 +79,20 @@ function App() {
     }
   }
 
+  async function fetchClutches() {
+    try {
+      const { data, error } = await supabase
+        .from('clutches')
+        .select('*')
+        .order('expected_hatch_date', { ascending: true, nullsFirst: false })
+
+      if (error) throw error
+      setClutches(data || [])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch clutches')
+    }
+  }
+
   function handleAddSuccess() {
     setShowAddForm(false)
     fetchSnakes()
@@ -78,6 +101,16 @@ function App() {
   function handleEditSuccess() {
     setEditingSnake(null)
     fetchSnakes()
+  }
+
+  function handleAddClutchSuccess() {
+    setShowAddClutchForm(false)
+    fetchClutches()
+  }
+
+  function handleEditClutchSuccess() {
+    setEditingClutch(null)
+    fetchClutches()
   }
 
   function toggleGroup(status: SnakeStatus) {
@@ -98,6 +131,10 @@ function App() {
   if (error) return <div className="error">Error: {error}</div>
 
   const groupedSnakes = groupSnakesByStatus(snakes)
+
+  // Separate active vs completed clutches
+  const activeClutches = clutches.filter(c => !c.actual_hatch_date)
+  const completedClutches = clutches.filter(c => c.actual_hatch_date)
 
   return (
     <div className="app">
@@ -155,6 +192,63 @@ function App() {
             })
           )}
         </section>
+
+        <section className="incubator">
+          <div className="collection-header">
+            <h2>Incubator ({activeClutches.length} active)</h2>
+            <button className="btn-add" onClick={() => setShowAddClutchForm(true)}>
+              + Add Clutch
+            </button>
+          </div>
+
+          {clutches.length === 0 ? (
+            <p className="empty">No clutches yet. Add your first clutch!</p>
+          ) : (
+            <>
+              {activeClutches.length > 0 && (
+                <div className="clutch-group">
+                  <div
+                    className="group-header"
+                    onClick={() => setIncubatorCollapsed(!incubatorCollapsed)}
+                  >
+                    <h3>Incubating</h3>
+                    <span className="group-count">{activeClutches.length}</span>
+                    <span className={`group-toggle ${incubatorCollapsed ? 'collapsed' : ''}`}>▼</span>
+                  </div>
+                  {!incubatorCollapsed && (
+                    <div className="clutch-grid">
+                      {activeClutches.map((clutch) => (
+                        <ClutchCard
+                          key={clutch.id}
+                          clutch={clutch}
+                          onClick={() => setEditingClutch(clutch)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {completedClutches.length > 0 && (
+                <div className="clutch-group">
+                  <div className="group-header completed-header">
+                    <h3>Hatched</h3>
+                    <span className="group-count">{completedClutches.length}</span>
+                  </div>
+                  <div className="clutch-grid">
+                    {completedClutches.map((clutch) => (
+                      <ClutchCard
+                        key={clutch.id}
+                        clutch={clutch}
+                        onClick={() => setEditingClutch(clutch)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </section>
       </main>
 
       {showAddForm && (
@@ -170,6 +264,22 @@ function App() {
           snake={editingSnake}
           onSuccess={handleEditSuccess}
           onCancel={() => setEditingSnake(null)}
+        />
+      )}
+
+      {showAddClutchForm && (
+        <AddClutchForm
+          userId={user.id}
+          onSuccess={handleAddClutchSuccess}
+          onCancel={() => setShowAddClutchForm(false)}
+        />
+      )}
+
+      {editingClutch && (
+        <EditClutchForm
+          clutch={editingClutch}
+          onSuccess={handleEditClutchSuccess}
+          onCancel={() => setEditingClutch(null)}
         />
       )}
     </div>

@@ -211,3 +211,109 @@ header {
 .group-toggle.collapsed {
   transform: rotate(-90deg);
 }
+
+/* Incubator Section */
+.incubator {
+  margin-top: 48px;
+}
+
+.incubator h2 {
+  color: #f97316;
+}
+
+.clutch-group {
+  margin-bottom: 32px;
+}
+
+.clutch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Clutch Card */
+.clutch-card {
+  background: #252525;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.clutch-card:hover {
+  border-color: #f97316;
+}
+
+.clutch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #333;
+}
+
+.clutch-number {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #f97316;
+}
+
+/* Countdown Badge */
+.countdown-badge {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.countdown-green {
+  background: #166534;
+  color: #4ade80;
+}
+
+.countdown-yellow {
+  background: #854d0e;
+  color: #fbbf24;
+}
+
+.countdown-red {
+  background: #991b1b;
+  color: #fca5a5;
+  animation: pulse 2s infinite;
+}
+
+.countdown-complete {
+  background: #1e3a8a;
+  color: #93c5fd;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.clutch-details p {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.clutch-details strong {
+  color: #888;
+  font-weight: 500;
+}
+
+.clutch-remarks {
+  color: #a0a0a0;
+  font-style: italic;
+}
+
+/* Completed group header */
+.completed-header h3 {
+  color: #93c5fd;
+}

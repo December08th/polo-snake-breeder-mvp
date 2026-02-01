@@ -55,11 +55,11 @@ mindmap
         Status grouping
         Edit/Delete modals
         breeder_id display
+        Clutch tracker
       Not Yet Built
         Weight logging UI
         Feeding log UI
         Pairing manager
-        Clutch tracker
         Photo uploads
     URLs
       Live: polo-snake-mvp.netlify.app
@@ -82,7 +82,35 @@ mindmap
 
 ---
 
-## Current State (01 Feb 2026)
+## ⚠️ Running Admin Scripts (Bypass RLS)
+
+**The Supabase CLI cannot execute SQL directly.** To run admin operations that bypass Row Level Security (RLS), use Node.js scripts with the **service role key**.
+
+### Setup (one-time)
+1. Get service key from: https://supabase.com/dashboard/project/guqxoychegqxreywfinv/settings/api
+2. Add to `app/.env`:
+   ```
+   SUPABASE_URL=https://guqxoychegqxreywfinv.supabase.co
+   SUPABASE_SERVICE_KEY=eyJ...your-service-key...
+   ```
+
+### Available Scripts
+```bash
+cd app
+
+# Transfer snakes to a user account
+node --env-file=.env transfer-snakes-to-user.js poloyaux@gmail.com
+
+# Update breeder IDs on snakes
+node --env-file=.env update-breeder-ids.js
+```
+
+### Creating New Admin Scripts
+Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service key bypasses RLS policies.
+
+---
+
+## Current State (02 Feb 2026)
 
 ### Done
 - User auth (email/password, confirmation flow)
@@ -92,12 +120,14 @@ mindmap
 - breeder_id field added - displays Polo's original IDs
 - All 45 snakes have breeder_ids populated
 - Siblings distinguished by weight suffix (e.g., "#65 C15-25-H (70g)")
+- **Polo's account created** (poloyaux@gmail.com)
+- **45 snakes transferred to Polo's account**
+- **Clutch Tracker** - Incubator section with countdown, add/edit/delete clutches
 
 ### Next Priorities
 1. **Weight Logging** - form + history chart per snake
 2. **Feeding Log** - refusals, days since meal
 3. **Pairing Manager** - follicle tracking, locks, PLS dates
-4. **Clutch Tracker** - egg counts, hatch countdown
 
 ---
 
