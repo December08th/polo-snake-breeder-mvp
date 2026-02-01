@@ -14,6 +14,7 @@ export function AddSnakeForm({ userId, onSuccess, onCancel }: AddSnakeFormProps)
   const [error, setError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
+    breeder_id: '',
     name: '',
     sex: '' as 'M' | 'F' | '',
     morph: '',
@@ -39,6 +40,7 @@ export function AddSnakeForm({ userId, onSuccess, onCancel }: AddSnakeFormProps)
     try {
       const { error } = await supabase.from('snakes').insert({
         user_id: userId,
+        breeder_id: formData.breeder_id || null,
         name: formData.name || null,
         sex: formData.sex || null,
         morph: formData.morph || null,
@@ -69,6 +71,18 @@ export function AddSnakeForm({ userId, onSuccess, onCancel }: AddSnakeFormProps)
         {error && <div className="form-error">{error}</div>}
 
         <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="breeder_id">Breeder ID</label>
+            <input
+              type="text"
+              id="breeder_id"
+              name="breeder_id"
+              value={formData.breeder_id}
+              onChange={handleChange}
+              placeholder="e.g., #9 or C5-23-A"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input

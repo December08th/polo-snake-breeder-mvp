@@ -36,6 +36,7 @@ export interface Snake {
   clutch_letter: string | null
   consecutive_meals: number
   last_meal_date: string | null
+  breeder_id: string | null
   created_at: string
   updated_at: string
 }

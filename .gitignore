@@ -4,7 +4,8 @@
 # Supabase local temp files
 supabase/.temp
 
-# Environment files (keep .env for reference, ignore .env.local)
+# Environment files
+.env
 .env.local
 .env*.local
 

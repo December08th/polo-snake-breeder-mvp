@@ -15,6 +15,7 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const [formData, setFormData] = useState({
+    breeder_id: snake.breeder_id || '',
     name: snake.name || '',
     sex: (snake.sex || '') as 'M' | 'F' | '',
     morph: snake.morph || '',
@@ -41,6 +42,7 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
       const { error } = await supabase
         .from('snakes')
         .update({
+          breeder_id: formData.breeder_id || null,
           name: formData.name || null,
           sex: formData.sex || null,
           morph: formData.morph || null,
@@ -86,11 +88,23 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
   return (
     <div className="modal-overlay">
       <form className="edit-snake-form" onSubmit={handleSubmit}>
-        <h2>Edit Snake #{snake.snake_number}</h2>
+        <h2>Edit Snake {snake.breeder_id || `#${snake.snake_number}`}</h2>
 
         {error && <div className="form-error">{error}</div>}
 
         <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="breeder_id">Breeder ID</label>
+            <input
+              type="text"
+              id="breeder_id"
+              name="breeder_id"
+              value={formData.breeder_id}
+              onChange={handleChange}
+              placeholder="e.g., #9 or C5-23-A"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
@@ -102,7 +116,9 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
               placeholder="Optional"
             />
           </div>
+        </div>
 
+        <div className="form-row">
           <div className="form-group">
             <label htmlFor="sex">Sex *</label>
             <select id="sex" name="sex" value={formData.sex} onChange={handleChange} required>
@@ -111,10 +127,9 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
               <option value="F">Female</option>
             </select>
           </div>
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="morph">Morph *</label>
+          <div className="form-group">
+            <label htmlFor="morph">Morph *</label>
           <input
             type="text"
             id="morph"
@@ -124,6 +139,7 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
             placeholder="e.g., Clown Het Pied"
             required
           />
+          </div>
         </div>
 
         <div className="form-group">

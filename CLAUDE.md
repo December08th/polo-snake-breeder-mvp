@@ -1,170 +1,172 @@
 # PyThrone MVP - Project Context
 
-## Overview
-- **Project:** Snake Breeder Management System for Polo
-- **Live URL:** https://polo-snake-mvp.netlify.app
-- **GitHub:** December08th/polo-snake-breeder-mvp
-- **Netlify:** Connected to GitHub repo (auto-deploys on push)
-- **Supabase Project:** guqxoychegqxreywfinv (PoloSnake)
+## Mindmap
 
----
-
-## Tech Stack
-- **Frontend:** React 19 + TypeScript + Vite
-- **Backend:** Supabase (PostgreSQL + Auth + Storage)
-- **Hosting:** Netlify (frontend), Supabase Cloud (backend)
-
----
-
-## Current State (as of 01 Feb 2026)
-
-### What's Working
-- User authentication (email/password signup & login)
-- Email confirmation flow for new signups
-- Per-user data isolation via RLS policies
-- Snake collection view (grid layout, dark theme)
-- Add Snake form with all fields
-- Live deployment at https://polo-snake-mvp.netlify.app
-
-### Database Schema
-All tables have `user_id` column for multi-tenancy:
-1. **snakes** - Core snake profiles (name, sex, morph, weight, status, price, etc.)
-2. **weight_logs** - Weight tracking history
-3. **feeding_logs** - Feeding records
-4. **pairings** - Breeding pairs (female + status + dates)
-5. **pairing_males** - Junction table for dual-sired pairings
-6. **follicle_checks** - Ultrasound tracking
-7. **clutches** - Egg/hatch tracking
-8. **morphs** - Reference data (global, seeded with common morphs)
-
-### Key Files
-- `app/src/App.tsx` - Main app with auth gate
-- `app/src/contexts/AuthContext.tsx` - Session management
-- `app/src/components/Auth.tsx` - Login/signup form
-- `app/src/components/AddSnakeForm.tsx` - Snake creation form
-- `app/src/types/database.ts` - TypeScript interfaces
-- `supabase/migrations/` - Database migrations
-
----
-
-## Completed Work
-
-### Session 1 (01 Feb 2026 - Morning)
-- [x] MVP feedback form
-- [x] REQUIREMENTS.md with Phase 1 specs
-- [x] SCHEMA.md with database design
-- [x] Supabase project setup
-- [x] Initial database migration
-- [x] React app scaffold
-- [x] Snake collection view + Add Snake form
-
-### Session 2 (01 Feb 2026 - Afternoon)
-- [x] **Multi-tenancy & Auth implementation**
-  - Added `user_id` columns to 7 tables
-  - Created RLS policies for data isolation
-  - Built custom Auth component (login/signup)
-  - Added AuthContext for session management
-  - Updated all forms to include `user_id`
-- [x] Supabase CLI setup for migrations
-- [x] Pushed migrations to cloud Supabase
-- [x] Netlify environment variables configured
-- [x] Production deployment working
-
----
-
-## Next Steps (Priority Order)
-
-### 1. Collection View Enhancements
-- Group snakes by status (Male Breeders, Female Breeders, Holdbacks, For Sale)
-- Sort by weight within groups
-- Add edit/delete functionality for snakes
-
-### 2. Weight Logging
-- Add weight log form (per snake)
-- Display weight history
-- Basic growth trend chart
-
-### 3. Feeding Log (Low Priority)
-- Simple "fed today" button
-- Track refusals
-- Show "days since last meal"
-
-### 4. Pairing Manager (Key Feature)
-- Create pairing (female + male(s))
-- Track lock dates and counts
-- Follicle check logging with size in mm
-- Auto-calculate next check date based on follicle size
-- Track ovulation date and Pre-Lay Shed (PLS)
-
-### 5. Clutch Tracker
-- Link clutch to pairing
-- Track lay date, egg counts (fertile/slug/kink)
-- Hatch countdown (57 days from lay)
-
----
-
-## Environment Setup
-
-### Local Development
-```bash
-cd C:\dev\polo-snake-breeder-mvp\app
-npm install
-npm run dev
+```mermaid
+mindmap
+  root((PyThrone MVP))
+    Tech Stack
+      Frontend
+        React 19
+        TypeScript
+        Vite
+      Backend
+        Supabase
+        PostgreSQL
+        RLS Policies
+      Hosting
+        Netlify frontend
+        Supabase Cloud
+    Run Commands
+      cd app && npm run dev
+      localhost:5175
+      npm run build
+    Database
+      snakes
+        breeder_id custom IDs
+        45 snakes imported
+      weight_logs
+      feeding_logs
+      pairings
+        pairing_males junction
+        follicle_checks
+      clutches
+      morphs reference
+    Domain Knowledge
+      breeder_id
+        Original IDs from Polo
+        Format: #9 or C5-23-A
+        Siblings get weight suffix
+      Status Groups
+        F_BREEDER, M_BREEDER
+        F_HOLDBACK, M_HOLDBACK
+        F_AVAILABLE, M_AVAILABLE
+        ON_HOLD
+      Follicle Schedule
+        Under 20mm = monthly
+        20-30mm = biweekly
+        Over 30mm = weekly
+      Clutch Timeline
+        57 days to hatch
+    Current State
+      Working
+        Auth email/password
+        Snake CRUD
+        Status grouping
+        Edit/Delete modals
+        breeder_id display
+      Not Yet Built
+        Weight logging UI
+        Feeding log UI
+        Pairing manager
+        Clutch tracker
+        Photo uploads
+    URLs
+      Live: polo-snake-mvp.netlify.app
+      Supabase: guqxoychegqxreywfinv
+      GitHub: December08th/polo-snake-breeder-mvp
 ```
 
-### Environment Variables
-Already configured in:
-- `app/.env` - Local development (points to cloud Supabase)
-- Netlify dashboard - Production deployment
+---
 
-### Supabase CLI (for migrations)
-```bash
-# Login (run in your terminal, not through Claude)
-npx supabase login
+## Quick Reference
 
-# Link to project
-npx supabase link --project-ref guqxoychegqxreywfinv
-
-# Push new migrations
-npx supabase db push
-```
-
-Note: Docker Desktop required for local Supabase (`supabase start`), but virtualization must be enabled in BIOS. Cloud-based development works without Docker.
+| What | Value |
+|------|-------|
+| Run locally | `cd app && npm run dev` |
+| Local URL | http://localhost:5175 |
+| Live URL | https://polo-snake-mvp.netlify.app |
+| Supabase project | guqxoychegqxreywfinv |
+| Package manager | npm |
+| .env location | `app/.env` |
 
 ---
 
-## Polo's Requirements Summary
+## Current State (01 Feb 2026)
 
-### Snake Profiles
-- Name, sex, morph, genetics, DOB, weight, status, rack size, price, notes
-- Photo support (future)
+### Done
+- User auth (email/password, confirmation flow)
+- Per-user data isolation (RLS)
+- Snake collection with status grouping (7 groups, sorted by weight)
+- Add/Edit/Delete snake functionality
+- breeder_id field added - displays Polo's original IDs
+- All 45 snakes have breeder_ids populated
+- Siblings distinguished by weight suffix (e.g., "#65 C15-25-H (70g)")
 
-### Collection View Groups
-- Male Breeders, Female Breeders, Holdbacks, For Sale
-- Sorted by weight within groups
+### Next Priorities
+1. **Weight Logging** - form + history chart per snake
+2. **Feeding Log** - refusals, days since meal
+3. **Pairing Manager** - follicle tracking, locks, PLS dates
+4. **Clutch Tracker** - egg counts, hatch countdown
 
-### Pairing Manager (Critical)
-- Follicle tracking with ultrasound schedule:
-  - Monthly when <20mm
-  - Biweekly when >20mm
-  - Weekly when >30mm until ovulation
-- Track Pre-Lay Shed (PLS) date
+---
 
-### Clutch Tracker
-- Egg counts, hatch countdown, link offspring to clutch
+## Domain Knowledge
+
+### breeder_id Convention
+Polo's original snake IDs from his spreadsheet. Format varies:
+- Simple: `#9`, `#65`
+- Clutch-based: `C5-23-A` (Clutch 5, 2023, letter A)
+- Siblings with same breeder_id get weight suffix to distinguish
+
+### Status Groups
+| Status | Meaning |
+|--------|---------|
+| F_BREEDER | Female breeder |
+| M_BREEDER | Male breeder |
+| F_HOLDBACK | Female kept for future breeding |
+| M_HOLDBACK | Male kept for future breeding |
+| F_AVAILABLE | Female for sale |
+| M_AVAILABLE | Male for sale |
+| ON_HOLD | Reserved by buyer |
+
+### Follicle Check Schedule
+| Size | Frequency |
+|------|-----------|
+| < 20mm | Monthly |
+| 20-30mm | Every 2 weeks |
+| > 30mm | Weekly until ovulation |
+
+### Clutch Timeline
+- 57 days from lay date to expected hatch
+- Track: fertile, slug, kink counts
+
+---
+
+## Key Files
+
+| Purpose | Path |
+|---------|------|
+| Main app | `app/src/App.tsx` |
+| Types | `app/src/types/database.ts` |
+| Supabase client | `app/src/lib/supabase.ts` |
+| Auth context | `app/src/contexts/AuthContext.tsx` |
+| Components | `app/src/components/` |
+| Migrations | `supabase/migrations/` |
+| Requirements | `REQUIREMENTS.md` |
+| Schema docs | `SCHEMA.md` |
 
 ---
 
 ## Credentials & Access
 
-### Supabase
-- Project: guqxoychegqxreywfinv
-- Dashboard: https://supabase.com/dashboard/project/guqxoychegqxreywfinv
-- API URL: https://guqxoychegqxreywfinv.supabase.co
+| Service | Details |
+|---------|---------|
+| Supabase | Project `guqxoychegqxreywfinv` |
+| Supabase Dashboard | https://supabase.com/dashboard/project/guqxoychegqxreywfinv |
+| Netlify | Site `polo-snake-mvp` |
+| GitHub | December08th/polo-snake-breeder-mvp |
 
-### Netlify
-- Site: polo-snake-mvp
-- Dashboard: https://app.netlify.com/sites/polo-snake-mvp
+---
 
-### GitHub
-- Repo: December08th/polo-snake-breeder-mvp
+## Supabase CLI
+
+```bash
+# Link to project (one-time)
+npx supabase link --project-ref guqxoychegqxreywfinv
+
+# Push migrations
+npx supabase db push
+```
+
+Note: Docker Desktop needed for local Supabase, but cloud works without it.

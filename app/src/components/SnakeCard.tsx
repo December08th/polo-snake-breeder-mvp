@@ -6,10 +6,13 @@ interface SnakeCardProps {
 }
 
 export function SnakeCard({ snake, onClick }: SnakeCardProps) {
+  // Display breeder_id if present, otherwise fall back to auto-generated snake_number
+  const displayId = snake.breeder_id || `#${snake.snake_number}`
+
   return (
     <div className="snake-card" onClick={onClick}>
       <div className="snake-header">
-        <span className="snake-number">#{snake.snake_number}</span>
+        <span className="snake-number">{displayId}</span>
         {snake.name && <span className="snake-name">{snake.name}</span>}
       </div>
       <div className="snake-details">
