@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pairing Manager Feedback - PyThrone MVP</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Pairing Manager</h1>
+        <p class="subtitle">Feature Review</p>
+        <p class="intro">Hey Polo! Before I build the Pairing Manager, I want to make sure I've got it right. Please review each section and let me know if this matches how you work.</p>
+    </header>
+
+    <main>
+        <form name="pairing-manager-feedback" method="POST" data-netlify="true" action="/submitted.html">
+            <input type="hidden" name="form-name" value="pairing-manager-feedback">
+
+            <section class="phase phase-1">
+                <h2>How It Will Work</h2>
+                <p class="phase-desc">Review each part of the Pairing Manager below.</p>
+
+                <div class="feature-card">
+                    <h3>1. Pairings List</h3>
+                    <p class="feature-desc">A section showing all your active pairings. Each card shows the female, which male(s) she's paired with, and key dates at a glance.</p>
+                    <label for="feedback-list">Does this work for you? How do you want pairings organized?</label>
+                    <textarea id="feedback-list" name="feedback-list" rows="4" placeholder="By female? By status? By date? Something else?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>2. Creating a Pairing</h3>
+                    <p class="feature-desc">Pick a female from your breeders, then add one or more males. For each male you can track:</p>
+                    <ul style="color: var(--text-light); margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8;">
+                        <li>Lock count (number of successful locks)</li>
+                        <li>Last lock date</li>
+                        <li>Goal: 1-2 locks per month per female</li>
+                    </ul>
+                    <p class="feature-desc">Supports dual-sired clutches (multiple males paired with same female).</p>
+                    <label for="feedback-create">Anything else you track when creating pairings?</label>
+                    <textarea id="feedback-create" name="feedback-create" rows="4" placeholder="What info do you need to record when you pair snakes?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>3. Follicle Tracking</h3>
+                    <p class="feature-desc">Log ultrasound measurements. The app auto-calculates when the next check is due:</p>
+                    <ul style="color: var(--text-light); margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8;">
+                        <li><strong>Under 20mm</strong> = check again in 1 month</li>
+                        <li><strong>20-30mm</strong> = check in 2 weeks</li>
+                        <li><strong>Over 30mm</strong> = check weekly until ovulation</li>
+                    </ul>
+                    <label for="feedback-follicle">Does this schedule match your practice?</label>
+                    <textarea id="feedback-follicle" name="feedback-follicle" rows="4" placeholder="Any adjustments needed to the follicle check schedule?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>4. Key Dates</h3>
+                    <p class="feature-desc">The dates you'll log for each pairing:</p>
+                    <ul style="color: var(--text-light); margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8;">
+                        <li><strong>Pairing start date</strong> - when you put them together</li>
+                        <li><strong>Ovulation date (Ovi)</strong> - when she ovulates</li>
+                        <li><strong>Pre-Lay Shed date (PLS)</strong> - I know this one's important!</li>
+                    </ul>
+                    <p class="feature-desc">The app will show countdowns/estimates based on your averages:</p>
+                    <ul style="color: var(--text-light); margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8;">
+                        <li>Ovi to Lay: ~56 days</li>
+                        <li>PLS to Lay: ~32 days</li>
+                    </ul>
+                    <label for="feedback-dates">Any other dates you track? Are these averages accurate?</label>
+                    <textarea id="feedback-dates" name="feedback-dates" rows="4" placeholder="What dates matter most to you?"></textarea>
+                </div>
+
+                <div class="feature-card">
+                    <h3>5. Status Flow</h3>
+                    <p class="feature-desc">Pairings move through these stages:</p>
+                    <ul style="color: var(--text-light); margin: 1rem 0 1.25rem 1.5rem; line-height: 1.8;">
+                        <li><strong>Active</strong> - currently paired, waiting for ovulation</li>
+                        <li><strong>Ovulated</strong> - she's ovulated, waiting for lay</li>
+                        <li><strong>Laid</strong> - eggs laid, links to clutch tracker</li>
+                        <li><strong>Complete</strong> - season finished for this pairing</li>
+                    </ul>
+                    <label for="feedback-status">Does this status flow make sense?</label>
+                    <textarea id="feedback-status" name="feedback-status" rows="4" placeholder="Any stages missing or named wrong?"></textarea>
+                </div>
+
+                <div class="feature-card general-feedback">
+                    <h3>Anything Else?</h3>
+                    <p class="feature-desc">Any other thoughts, questions, or features you need in the Pairing Manager?</p>
+                    <label for="feedback-general">Your feedback:</label>
+                    <textarea id="feedback-general" name="feedback-general" rows="4" placeholder="What did I miss?"></textarea>
+                </div>
+            </section>
+
+            <footer>
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </footer>
+        </form>
+    </main>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'pythrone-pairing-feedback-draft';
+            const form = document.querySelector('form[name="pairing-manager-feedback"]');
+            const textareas = form.querySelectorAll('textarea');
+            let hasUnsavedChanges = false;
+
+            const indicator = document.createElement('div');
+            indicator.className = 'draft-indicator';
+            indicator.textContent = 'Draft saved';
+            indicator.setAttribute('aria-live', 'polite');
+            document.body.appendChild(indicator);
+
+            function restoreDraft() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        textareas.forEach(textarea => {
+                            if (data[textarea.name]) {
+                                textarea.value = data[textarea.name];
+                                hasUnsavedChanges = true;
+                            }
+                        });
+                    } catch (e) {
+                        console.error('Error restoring draft:', e);
+                    }
+                }
+            }
+
+            function saveDraft() {
+                const data = {};
+                let hasContent = false;
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim()) {
+                        data[textarea.name] = textarea.value;
+                        hasContent = true;
+                    }
+                });
+
+                if (hasContent) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    hasUnsavedChanges = true;
+                    showIndicator();
+                } else {
+                    localStorage.removeItem(STORAGE_KEY);
+                    hasUnsavedChanges = false;
+                }
+            }
+
+            function showIndicator() {
+                indicator.classList.add('visible');
+                setTimeout(() => {
+                    indicator.classList.remove('visible');
+                }, 2000);
+            }
+
+            function clearDraft() {
+                localStorage.removeItem(STORAGE_KEY);
+                hasUnsavedChanges = false;
+            }
+
+            restoreDraft();
+
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', saveDraft);
+            });
+
+            window.addEventListener('beforeunload', function(e) {
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    return '';
+                }
+            });
+
+            form.addEventListener('submit', function() {
+                clearDraft();
+            });
+        })();
+    </script>
+</body>
+</html>
