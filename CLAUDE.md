@@ -84,6 +84,27 @@ mindmap
 
 ---
 
+## Plan Feedback (Polo Review)
+
+Before building new features, create a **Plan Feedback form** for Polo to review and approve the design.
+
+### When to Suggest
+- About to build a new feature (Weight Logging, Pairing Manager, etc.)
+- Making significant changes to existing features
+- Requirements seem ambiguous or have multiple approaches
+
+### How It Works
+1. Create HTML form in `app/public/` with feature details (user-friendly, not technical)
+2. Use Netlify Forms for submission (`data-netlify="true"`)
+3. Include `feedback-styles.css` for consistent styling
+4. Deploy and send URL to Polo
+5. Review his feedback before building
+
+### Existing Forms
+- `/pairing-feedback.html` - Pairing Manager review (pending)
+
+---
+
 ## ⚠️ Running Admin Scripts (Bypass RLS)
 
 **The Supabase CLI cannot execute SQL directly.** To run admin operations that bypass Row Level Security (RLS), use Node.js scripts with the **service role key**.
