@@ -12,7 +12,8 @@ import { PairingCard, type PairingWithRelations } from './components/PairingCard
 import { AddPairingForm } from './components/AddPairingForm'
 import { EditPairingForm } from './components/EditPairingForm'
 import { StatusSettingsModal, getHiddenStatuses } from './components/StatusSettingsModal'
-import type { Snake, SnakeStatus, Clutch, PairingStatus } from './types/database'
+import { WeightLogModal } from './components/WeightLogModal'
+import type { Snake, SnakeStatus, Clutch, PairingStatus, WeightLog } from './types/database'
 import './App.css'
 
 const STATUS_GROUPS: { status: SnakeStatus; label: string }[] = [
@@ -46,6 +47,7 @@ function groupSnakesByStatus(snakes: Snake[]): Map<SnakeStatus, Snake[]> {
 function App() {
   const { user, loading: authLoading, signOut } = useAuth()
   const [snakes, setSnakes] = useState<Snake[]>([])
+  const [weightLogs, setWeightLogs] = useState<Map<string, WeightLog[]>>(new Map())
   const [clutches, setClutches] = useState<Clutch[]>([])
   const [pairings, setPairings] = useState<PairingWithRelations[]>([])
   const [loading, setLoading] = useState(true)
@@ -56,6 +58,7 @@ function App() {
   const [editingSnake, setEditingSnake] = useState<Snake | null>(null)
   const [editingClutch, setEditingClutch] = useState<Clutch | null>(null)
   const [editingPairing, setEditingPairing] = useState<PairingWithRelations | null>(null)
+  const [weightLogSnake, setWeightLogSnake] = useState<Snake | null>(null)
   const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(
     () => new Set(STATUS_GROUPS.map(g => g.status))
   )
@@ -68,10 +71,12 @@ function App() {
   useEffect(() => {
     if (user) {
       fetchSnakes()
+      fetchWeightLogs()
       fetchClutches()
       fetchPairings()
     } else {
       setSnakes([])
+      setWeightLogs(new Map())
       setClutches([])
       setPairings([])
       setLoading(false)
@@ -91,6 +96,28 @@ function App() {
       setError(err instanceof Error ? err.message : 'Failed to fetch snakes')
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function fetchWeightLogs() {
+    try {
+      const { data, error } = await supabase
+        .from('weight_logs')
+        .select('*')
+        .order('recorded_at', { ascending: false })
+
+      if (error) throw error
+
+      // Group by snake_id
+      const logsMap = new Map<string, WeightLog[]>()
+      for (const log of data || []) {
+        const existing = logsMap.get(log.snake_id) || []
+        existing.push(log)
+        logsMap.set(log.snake_id, existing)
+      }
+      setWeightLogs(logsMap)
+    } catch (err) {
+      console.error('Failed to fetch weight logs:', err)
     }
   }
 
@@ -138,6 +165,17 @@ function App() {
   function handleEditSuccess() {
     setEditingSnake(null)
     fetchSnakes()
+  }
+
+  function handleWeightUpdate() {
+    fetchSnakes()
+    fetchWeightLogs()
+  }
+
+  function handleWeightLogSuccess() {
+    setWeightLogSnake(null)
+    fetchSnakes()
+    fetchWeightLogs()
   }
 
   function handleAddClutchSuccess() {
@@ -258,7 +296,10 @@ function App() {
                         <SnakeCard
                           key={snake.id}
                           snake={snake}
+                          weightLogs={weightLogs.get(snake.id) || []}
                           onClick={() => setEditingSnake(snake)}
+                          onWeightUpdate={handleWeightUpdate}
+                          onViewWeightHistory={() => setWeightLogSnake(snake)}
                         />
                       ))}
                     </div>
@@ -498,6 +539,15 @@ function App() {
           pairing={editingPairing}
           onSuccess={handleEditPairingSuccess}
           onCancel={() => setEditingPairing(null)}
+        />
+      )}
+
+      {weightLogSnake && (
+        <WeightLogModal
+          snake={weightLogSnake}
+          logs={weightLogs.get(weightLogSnake.id) || []}
+          onClose={() => setWeightLogSnake(null)}
+          onUpdate={handleWeightLogSuccess}
         />
       )}
     </div>

@@ -1,0 +1,294 @@
+.weight-log-modal {
+  background: #252525;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+.weight-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.weight-log-header h2 {
+  color: #4ade80;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: #e0e0e0;
+}
+
+/* Chart */
+.weight-chart {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 16px 8px;
+  margin-bottom: 24px;
+}
+
+.weight-chart-empty {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* Add form */
+.weight-add-form {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.weight-add-form h3 {
+  color: #fbbf24;
+  font-size: 1rem;
+  margin: 0 0 12px 0;
+}
+
+.weight-add-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.weight-add-form .form-group {
+  margin-bottom: 12px;
+}
+
+.weight-add-form .form-group label {
+  display: block;
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.weight-add-form .form-group input {
+  width: 100%;
+  padding: 8px 10px;
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.weight-add-form .form-group input:focus {
+  outline: none;
+  border-color: #4ade80;
+}
+
+.weight-add-form .form-group input::placeholder {
+  color: #666;
+}
+
+.btn-add-weight {
+  width: 100%;
+  padding: 10px;
+  background: #4ade80;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-add-weight:hover:not(:disabled) {
+  background: #22c55e;
+}
+
+.btn-add-weight:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Log list */
+.weight-log-list h3 {
+  color: #fbbf24;
+  font-size: 1rem;
+  margin: 0 0 12px 0;
+}
+
+.empty-logs {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.log-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border-radius: 6px;
+}
+
+.log-entry:has(.log-notes) {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-rows: auto auto;
+}
+
+.log-date {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.log-weight {
+  color: #4ade80;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.log-change {
+  font-size: 0.85rem;
+  min-width: 50px;
+  text-align: right;
+}
+
+.log-change.positive {
+  color: #4ade80;
+}
+
+.log-change.negative {
+  color: #ef4444;
+}
+
+.log-notes {
+  grid-column: 1 / -2;
+  color: #888;
+  font-size: 0.85rem;
+  font-style: italic;
+  padding-top: 4px;
+}
+
+.btn-delete-log {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.btn-delete-log:hover:not(:disabled) {
+  color: #ef4444;
+}
+
+.btn-delete-log:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Quick weight log popup */
+.quick-weight-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #252525;
+  border: 1px solid #4ade80;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 4px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.quick-weight-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-weight-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.quick-weight-input input {
+  flex: 1;
+  padding: 8px 10px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+}
+
+.quick-weight-input input:focus {
+  outline: none;
+  border-color: #4ade80;
+}
+
+.quick-weight-input span {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.quick-weight-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.quick-weight-actions button {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quick-weight-actions .btn-cancel {
+  background: #444;
+  color: #e0e0e0;
+}
+
+.quick-weight-actions .btn-save {
+  background: #4ade80;
+  color: #1a1a1a;
+}
+
+.quick-weight-actions .btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

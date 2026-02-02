@@ -62,8 +62,11 @@ mindmap
           Status tracking
           Lock counts
           Follicle checks
+        Weight logging
+          Quick-log on card
+          History modal
+          Growth chart
       Not Yet Built
-        Weight logging UI
         Feeding log UI
         Photo uploads
     URLs
@@ -157,10 +160,11 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Status groups collapsed by default** - click to expand
 - **Supabase Site URL fixed** - confirmation emails now use production URL
 - **Pairing Manager** - organize by female, track lock counts per male, follicle checks, key dates (Ovi, PLS), status flow (Active → Ovulated → Laid → Complete)
+- **Weight Logging** - quick-log from SnakeCard, full history modal with growth chart (recharts), auto-updates snake.weight_grams, recent weights visible on card
 
 ### Next Priorities
-1. **Weight Logging** - form + history chart per snake
-2. **Feeding Log** - refusals, days since meal
+1. **Feeding Log** - refusals, days since meal
+2. **Photo uploads**
 
 ---
 
@@ -205,6 +209,7 @@ Polo's original snake IDs from his spreadsheet. Format varies:
 | Supabase client | `app/src/lib/supabase.ts` |
 | Auth context | `app/src/contexts/AuthContext.tsx` |
 | Components | `app/src/components/` |
+| Weight logging | `app/src/components/WeightLogModal.tsx`, `WeightChart.tsx`, `QuickWeightLog.tsx` |
 | Migrations | `supabase/migrations/` |
 | Requirements | `REQUIREMENTS.md` |
 | Schema docs | `SCHEMA.md` |
