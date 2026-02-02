@@ -8,8 +8,11 @@ import { SnakeCard } from './components/SnakeCard'
 import { ClutchCard } from './components/ClutchCard'
 import { AddClutchForm } from './components/AddClutchForm'
 import { EditClutchForm } from './components/EditClutchForm'
+import { PairingCard, type PairingWithRelations } from './components/PairingCard'
+import { AddPairingForm } from './components/AddPairingForm'
+import { EditPairingForm } from './components/EditPairingForm'
 import { StatusSettingsModal, getHiddenStatuses } from './components/StatusSettingsModal'
-import type { Snake, SnakeStatus, Clutch } from './types/database'
+import type { Snake, SnakeStatus, Clutch, PairingStatus } from './types/database'
 import './App.css'
 
 const STATUS_GROUPS: { status: SnakeStatus; label: string }[] = [
@@ -44,17 +47,21 @@ function App() {
   const { user, loading: authLoading, signOut } = useAuth()
   const [snakes, setSnakes] = useState<Snake[]>([])
   const [clutches, setClutches] = useState<Clutch[]>([])
+  const [pairings, setPairings] = useState<PairingWithRelations[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showAddForm, setShowAddForm] = useState(false)
   const [showAddClutchForm, setShowAddClutchForm] = useState(false)
+  const [showAddPairingForm, setShowAddPairingForm] = useState(false)
   const [editingSnake, setEditingSnake] = useState<Snake | null>(null)
   const [editingClutch, setEditingClutch] = useState<Clutch | null>(null)
+  const [editingPairing, setEditingPairing] = useState<PairingWithRelations | null>(null)
   const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(
     () => new Set(STATUS_GROUPS.map(g => g.status))
   )
   const [incubatorCollapsed, setIncubatorCollapsed] = useState(true)
   const [hatchedCollapsed, setHatchedCollapsed] = useState(true)
+  const [pairingsCollapsed, setPairingsCollapsed] = useState<Set<PairingStatus>>(() => new Set())
   const [showStatusSettings, setShowStatusSettings] = useState(false)
   const [hiddenStatuses, setHiddenStatuses] = useState<Set<SnakeStatus>>(() => new Set(getHiddenStatuses()))
 
@@ -62,9 +69,11 @@ function App() {
     if (user) {
       fetchSnakes()
       fetchClutches()
+      fetchPairings()
     } else {
       setSnakes([])
       setClutches([])
+      setPairings([])
       setLoading(false)
     }
   }, [user])
@@ -99,6 +108,28 @@ function App() {
     }
   }
 
+  async function fetchPairings() {
+    try {
+      const { data, error } = await supabase
+        .from('pairings')
+        .select(`
+          *,
+          female:snakes!female_id(id, name, breeder_id),
+          pairing_males(
+            id, male_id, lock_count, last_lock_date,
+            male:snakes(id, name, breeder_id)
+          ),
+          follicle_checks(*)
+        `)
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setPairings((data || []) as PairingWithRelations[])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch pairings')
+    }
+  }
+
   function handleAddSuccess() {
     setShowAddForm(false)
     fetchSnakes()
@@ -117,6 +148,28 @@ function App() {
   function handleEditClutchSuccess() {
     setEditingClutch(null)
     fetchClutches()
+  }
+
+  function handleAddPairingSuccess() {
+    setShowAddPairingForm(false)
+    fetchPairings()
+  }
+
+  function handleEditPairingSuccess() {
+    setEditingPairing(null)
+    fetchPairings()
+  }
+
+  function togglePairingGroup(status: PairingStatus) {
+    setPairingsCollapsed(prev => {
+      const next = new Set(prev)
+      if (next.has(status)) {
+        next.delete(status)
+      } else {
+        next.add(status)
+      }
+      return next
+    })
   }
 
   function toggleGroup(status: SnakeStatus) {
@@ -141,6 +194,12 @@ function App() {
   // Separate active vs completed clutches
   const activeClutches = clutches.filter(c => !c.actual_hatch_date)
   const completedClutches = clutches.filter(c => c.actual_hatch_date)
+
+  // Group pairings by status
+  const activePairings = pairings.filter(p => p.status === 'ACTIVE')
+  const ovulatedPairings = pairings.filter(p => p.status === 'OVULATED')
+  const laidPairings = pairings.filter(p => p.status === 'LAID')
+  const completedPairings = pairings.filter(p => p.status === 'COMPLETE')
 
   return (
     <div className="app">
@@ -207,6 +266,117 @@ function App() {
                 </div>
               )
             })
+          )}
+        </section>
+
+        <section className="pairings">
+          <div className="collection-header">
+            <h2>Pairings ({pairings.length} total)</h2>
+            <button className="btn-add" onClick={() => setShowAddPairingForm(true)}>
+              + Add Pairing
+            </button>
+          </div>
+
+          {pairings.length === 0 ? (
+            <p className="empty">No pairings yet. Add your first pairing!</p>
+          ) : (
+            <>
+              {activePairings.length > 0 && (
+                <div className="pairing-group">
+                  <div
+                    className="group-header"
+                    onClick={() => togglePairingGroup('ACTIVE')}
+                  >
+                    <h3>Active</h3>
+                    <span className="group-count">{activePairings.length}</span>
+                    <span className={`group-toggle ${pairingsCollapsed.has('ACTIVE') ? 'collapsed' : ''}`}>&#9660;</span>
+                  </div>
+                  {!pairingsCollapsed.has('ACTIVE') && (
+                    <div className="pairing-grid">
+                      {activePairings.map((pairing) => (
+                        <PairingCard
+                          key={pairing.id}
+                          pairing={pairing}
+                          onClick={() => setEditingPairing(pairing)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {ovulatedPairings.length > 0 && (
+                <div className="pairing-group">
+                  <div
+                    className="group-header"
+                    onClick={() => togglePairingGroup('OVULATED')}
+                  >
+                    <h3>Ovulated</h3>
+                    <span className="group-count">{ovulatedPairings.length}</span>
+                    <span className={`group-toggle ${pairingsCollapsed.has('OVULATED') ? 'collapsed' : ''}`}>&#9660;</span>
+                  </div>
+                  {!pairingsCollapsed.has('OVULATED') && (
+                    <div className="pairing-grid">
+                      {ovulatedPairings.map((pairing) => (
+                        <PairingCard
+                          key={pairing.id}
+                          pairing={pairing}
+                          onClick={() => setEditingPairing(pairing)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {laidPairings.length > 0 && (
+                <div className="pairing-group">
+                  <div
+                    className="group-header"
+                    onClick={() => togglePairingGroup('LAID')}
+                  >
+                    <h3>Laid</h3>
+                    <span className="group-count">{laidPairings.length}</span>
+                    <span className={`group-toggle ${pairingsCollapsed.has('LAID') ? 'collapsed' : ''}`}>&#9660;</span>
+                  </div>
+                  {!pairingsCollapsed.has('LAID') && (
+                    <div className="pairing-grid">
+                      {laidPairings.map((pairing) => (
+                        <PairingCard
+                          key={pairing.id}
+                          pairing={pairing}
+                          onClick={() => setEditingPairing(pairing)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {completedPairings.length > 0 && (
+                <div className="pairing-group">
+                  <div
+                    className="group-header completed-header"
+                    onClick={() => togglePairingGroup('COMPLETE')}
+                  >
+                    <h3>Complete</h3>
+                    <span className="group-count">{completedPairings.length}</span>
+                    <span className={`group-toggle ${pairingsCollapsed.has('COMPLETE') ? 'collapsed' : ''}`}>&#9660;</span>
+                  </div>
+                  {!pairingsCollapsed.has('COMPLETE') && (
+                    <div className="pairing-grid">
+                      {completedPairings.map((pairing) => (
+                        <PairingCard
+                          key={pairing.id}
+                          pairing={pairing}
+                          onClick={() => setEditingPairing(pairing)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
         </section>
 
@@ -312,6 +482,22 @@ function App() {
             setShowStatusSettings(false)
             setHiddenStatuses(new Set(getHiddenStatuses()))
           }}
+        />
+      )}
+
+      {showAddPairingForm && (
+        <AddPairingForm
+          userId={user.id}
+          onSuccess={handleAddPairingSuccess}
+          onCancel={() => setShowAddPairingForm(false)}
+        />
+      )}
+
+      {editingPairing && (
+        <EditPairingForm
+          pairing={editingPairing}
+          onSuccess={handleEditPairingSuccess}
+          onCancel={() => setEditingPairing(null)}
         />
       )}
     </div>

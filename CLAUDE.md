@@ -58,10 +58,13 @@ mindmap
         breeder_id display
         Clutch tracker
         13 clutches imported
+        Pairing manager
+          Status tracking
+          Lock counts
+          Follicle checks
       Not Yet Built
         Weight logging UI
         Feeding log UI
-        Pairing manager
         Photo uploads
     URLs
       Live: polo-snake-mvp.netlify.app
@@ -101,7 +104,7 @@ Before building new features, create a **Plan Feedback form** for Polo to review
 5. Review his feedback before building
 
 ### Existing Forms
-- `/pairing-feedback.html` - Pairing Manager review (pending)
+- `/pairing-feedback.html` - Pairing Manager review (approved, implemented)
 
 ---
 
@@ -153,11 +156,11 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Hide Unused Statuses** - gear icon in collection header, localStorage persistence
 - **Status groups collapsed by default** - click to expand
 - **Supabase Site URL fixed** - confirmation emails now use production URL
+- **Pairing Manager** - organize by female, track lock counts per male, follicle checks, key dates (Ovi, PLS), status flow (Active → Ovulated → Laid → Complete)
 
 ### Next Priorities
 1. **Weight Logging** - form + history chart per snake
 2. **Feeding Log** - refusals, days since meal
-3. **Pairing Manager** - follicle tracking, locks, PLS dates
 
 ---
 
