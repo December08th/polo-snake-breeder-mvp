@@ -1,0 +1,333 @@
+/* CSS Variables - Dark theme with green/gold accents */
+:root {
+    --primary: #3cb371;       /* Medium sea green */
+    --primary-light: #5fd38d;
+    --secondary: #d4a932;     /* Gold accent */
+    --bg: #121212;
+    --bg-elevated: #1e1e1e;
+    --card-bg: #252525;
+    --text: #f0f0f0;
+    --text-light: #a8a8a8;
+    --border: #3a3a3a;
+    --phase2-bg: #1a2a24;
+    --phase3-bg: #2a251a;
+}
+
+/* Reset & Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    font-size: 18px;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #1a3a2a 0%, #2a4a3a 100%);
+    color: white;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    border-bottom: 3px solid var(--primary);
+}
+
+header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    color: var(--primary);
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.intro {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    opacity: 0.95;
+    line-height: 1.8;
+}
+
+/* Main Content */
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+/* Phase Sections */
+.phase {
+    margin-bottom: 3rem;
+}
+
+.phase h2 {
+    color: var(--primary);
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--secondary);
+    display: inline-block;
+}
+
+.phase-desc {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    font-size: 1.15rem;
+}
+
+/* Feature Cards (Phase 1) */
+.feature-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+}
+
+.feature-card h3 {
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.feature-desc {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+}
+
+.feature-card label {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+}
+
+.feature-card textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    resize: vertical;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg-elevated);
+    color: var(--text);
+}
+
+.feature-card textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #2a2a2a;
+}
+
+.feature-card textarea::placeholder {
+    color: #666;
+}
+
+.general-feedback {
+    border: 2px solid var(--secondary);
+    background: linear-gradient(to bottom right, #2a2518, var(--card-bg));
+}
+
+/* Phase 2 & 3 Lists */
+.phase-2 {
+    background: var(--phase2-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.phase-3 {
+    background: var(--phase3-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-list strong {
+    color: var(--text);
+    font-size: 1.2rem;
+}
+
+.feature-list span {
+    color: var(--text-light);
+    font-size: 1.05rem;
+}
+
+/* Phase Feedback Fields */
+.phase-feedback {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phase-feedback label {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+}
+
+.phase-feedback textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1.1rem;
+    resize: vertical;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg-elevated);
+    color: var(--text);
+}
+
+.phase-feedback textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #2a2a2a;
+}
+
+.phase-feedback textarea::placeholder {
+    color: #666;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2.5rem 0;
+    margin-top: 1.5rem;
+}
+
+.note {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #111;
+    border: none;
+    padding: 1.25rem 4rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(60, 179, 113, 0.4);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(60, 179, 113, 0.5);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    body {
+        font-size: 16px;
+    }
+
+    header {
+        padding: 2.5rem 1.25rem;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .intro {
+        font-size: 1.1rem;
+    }
+
+    main {
+        padding: 2rem 1rem;
+    }
+
+    .phase h2 {
+        font-size: 1.6rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .phase-2, .phase-3 {
+        padding: 1.5rem;
+    }
+
+    .submit-btn {
+        padding: 1rem 3rem;
+        font-size: 1.15rem;
+    }
+}
+
+/* Draft Saved Indicator */
+.draft-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: #111;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.draft-indicator.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

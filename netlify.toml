@@ -3,6 +3,23 @@
   command = "npm run build"
   publish = "dist"
 
+# Allow static feedback files to be served directly
+[[redirects]]
+  from = "/pairing-feedback.html"
+  to = "/pairing-feedback.html"
+  status = 200
+
+[[redirects]]
+  from = "/feedback-styles.css"
+  to = "/feedback-styles.css"
+  status = 200
+
+[[redirects]]
+  from = "/feedback-submitted.html"
+  to = "/feedback-submitted.html"
+  status = 200
+
+# SPA catch-all (must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"
