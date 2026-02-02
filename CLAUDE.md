@@ -53,9 +53,11 @@ mindmap
         Auth email/password
         Snake CRUD
         Status grouping
+        Hide unused statuses
         Edit/Delete modals
         breeder_id display
         Clutch tracker
+        13 clutches imported
       Not Yet Built
         Weight logging UI
         Feeding log UI
@@ -103,6 +105,9 @@ node --env-file=.env transfer-snakes-to-user.js poloyaux@gmail.com
 
 # Update breeder IDs on snakes
 node --env-file=.env update-breeder-ids.js
+
+# Import clutches (already run - 13 clutches imported)
+node --env-file=.env import-clutches.js
 ```
 
 ### Creating New Admin Scripts
@@ -123,6 +128,10 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Polo's account created** (poloyaux@gmail.com)
 - **45 snakes transferred to Polo's account**
 - **Clutch Tracker** - Incubator section with countdown, add/edit/delete clutches
+- **13 historical clutches imported** (C5-23 through C17-25)
+- **Hide Unused Statuses** - gear icon in collection header, localStorage persistence
+- **Status groups collapsed by default** - click to expand
+- **Supabase Site URL fixed** - confirmation emails now use production URL
 
 ### Next Priorities
 1. **Weight Logging** - form + history chart per snake

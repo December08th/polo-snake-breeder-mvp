@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Snake, SnakeStatus, RackSize } from '../types/database'
+import { getHiddenStatuses } from './StatusSettingsModal'
 import './EditSnakeForm.css'
+
+const ALL_STATUSES: { value: SnakeStatus; label: string }[] = [
+  { value: 'F_BREEDER', label: 'Female Breeder' },
+  { value: 'M_BREEDER', label: 'Male Breeder' },
+  { value: 'F_HOLDBACK', label: 'Female Holdback' },
+  { value: 'M_HOLDBACK', label: 'Male Holdback' },
+  { value: 'F_AVAILABLE', label: 'Female Available' },
+  { value: 'M_AVAILABLE', label: 'Male Available' },
+  { value: 'ON_HOLD', label: 'On Hold' },
+]
 
 interface EditSnakeFormProps {
   snake: Snake
@@ -184,13 +195,15 @@ export function EditSnakeForm({ snake, onSuccess, onCancel }: EditSnakeFormProps
             <label htmlFor="status">Status *</label>
             <select id="status" name="status" value={formData.status} onChange={handleChange} required>
               <option value="">Select...</option>
-              <option value="F_BREEDER">Female Breeder</option>
-              <option value="M_BREEDER">Male Breeder</option>
-              <option value="F_HOLDBACK">Female Holdback</option>
-              <option value="M_HOLDBACK">Male Holdback</option>
-              <option value="F_AVAILABLE">Female Available</option>
-              <option value="M_AVAILABLE">Male Available</option>
-              <option value="ON_HOLD">On Hold</option>
+              {ALL_STATUSES
+                .filter(({ value }) => {
+                  const hidden = getHiddenStatuses()
+                  // Always show the snake's current status, even if hidden
+                  return !hidden.includes(value) || value === snake.status
+                })
+                .map(({ value, label }) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
             </select>
           </div>
 

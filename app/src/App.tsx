@@ -8,6 +8,7 @@ import { SnakeCard } from './components/SnakeCard'
 import { ClutchCard } from './components/ClutchCard'
 import { AddClutchForm } from './components/AddClutchForm'
 import { EditClutchForm } from './components/EditClutchForm'
+import { StatusSettingsModal, getHiddenStatuses } from './components/StatusSettingsModal'
 import type { Snake, SnakeStatus, Clutch } from './types/database'
 import './App.css'
 
@@ -49,8 +50,12 @@ function App() {
   const [showAddClutchForm, setShowAddClutchForm] = useState(false)
   const [editingSnake, setEditingSnake] = useState<Snake | null>(null)
   const [editingClutch, setEditingClutch] = useState<Clutch | null>(null)
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(new Set())
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(
+    () => new Set(STATUS_GROUPS.map(g => g.status))
+  )
   const [incubatorCollapsed, setIncubatorCollapsed] = useState(false)
+  const [showStatusSettings, setShowStatusSettings] = useState(false)
+  const [hiddenStatuses, setHiddenStatuses] = useState<Set<SnakeStatus>>(() => new Set(getHiddenStatuses()))
 
   useEffect(() => {
     if (user) {
@@ -155,15 +160,26 @@ function App() {
         <section className="collection">
           <div className="collection-header">
             <h2>Collection ({snakes.length} snakes)</h2>
-            <button className="btn-add" onClick={() => setShowAddForm(true)}>
-              + Add Snake
-            </button>
+            <div className="collection-actions">
+              <button
+                className="btn-settings"
+                onClick={() => setShowStatusSettings(true)}
+                title="Configure visible statuses"
+              >
+                ⚙
+              </button>
+              <button className="btn-add" onClick={() => setShowAddForm(true)}>
+                + Add Snake
+              </button>
+            </div>
           </div>
 
           {snakes.length === 0 ? (
             <p className="empty">No snakes yet. Add your first snake!</p>
           ) : (
-            STATUS_GROUPS.map(({ status, label }) => {
+            STATUS_GROUPS
+              .filter(({ status }) => !hiddenStatuses.has(status))
+              .map(({ status, label }) => {
               const group = groupedSnakes.get(status)
               if (!group || group.length === 0) return null
 
@@ -280,6 +296,15 @@ function App() {
           clutch={editingClutch}
           onSuccess={handleEditClutchSuccess}
           onCancel={() => setEditingClutch(null)}
+        />
+      )}
+
+      {showStatusSettings && (
+        <StatusSettingsModal
+          onClose={() => {
+            setShowStatusSettings(false)
+            setHiddenStatuses(new Set(getHiddenStatuses()))
+          }}
         />
       )}
     </div>

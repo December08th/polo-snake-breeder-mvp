@@ -92,6 +92,32 @@ header {
   color: #fbbf24;
 }
 
+.collection-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-settings {
+  background: transparent;
+  color: #888;
+  border: 1px solid #444;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-settings:hover {
+  color: #e0e0e0;
+  border-color: #666;
+}
+
 .btn-add {
   background: #4ade80;
   color: #1a1a1a;
