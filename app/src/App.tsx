@@ -53,7 +53,8 @@ function App() {
   const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(
     () => new Set(STATUS_GROUPS.map(g => g.status))
   )
-  const [incubatorCollapsed, setIncubatorCollapsed] = useState(false)
+  const [incubatorCollapsed, setIncubatorCollapsed] = useState(true)
+  const [hatchedCollapsed, setHatchedCollapsed] = useState(true)
   const [showStatusSettings, setShowStatusSettings] = useState(false)
   const [hiddenStatuses, setHiddenStatuses] = useState<Set<SnakeStatus>>(() => new Set(getHiddenStatuses()))
 
@@ -247,19 +248,25 @@ function App() {
 
               {completedClutches.length > 0 && (
                 <div className="clutch-group">
-                  <div className="group-header completed-header">
+                  <div
+                    className="group-header completed-header"
+                    onClick={() => setHatchedCollapsed(!hatchedCollapsed)}
+                  >
                     <h3>Hatched</h3>
                     <span className="group-count">{completedClutches.length}</span>
+                    <span className={`group-toggle ${hatchedCollapsed ? 'collapsed' : ''}`}>▼</span>
                   </div>
-                  <div className="clutch-grid">
-                    {completedClutches.map((clutch) => (
-                      <ClutchCard
-                        key={clutch.id}
-                        clutch={clutch}
-                        onClick={() => setEditingClutch(clutch)}
-                      />
-                    ))}
-                  </div>
+                  {!hatchedCollapsed && (
+                    <div className="clutch-grid">
+                      {completedClutches.map((clutch) => (
+                        <ClutchCard
+                          key={clutch.id}
+                          clutch={clutch}
+                          onClick={() => setEditingClutch(clutch)}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </>
