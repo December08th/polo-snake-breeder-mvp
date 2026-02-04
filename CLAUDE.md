@@ -66,6 +66,9 @@ mindmap
           Quick-log on card
           History modal
           Growth chart
+        Hatchling tracking
+          In clutch editor
+          Sex/morph/genetics per baby
       Not Yet Built
         Feeding log UI
         Photo uploads
@@ -142,7 +145,7 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 
 ---
 
-## Current State (02 Feb 2026)
+## Current State (04 Feb 2026)
 
 ### Done
 - User auth (email/password, confirmation flow)
@@ -161,6 +164,7 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Supabase Site URL fixed** - confirmation emails now use production URL
 - **Pairing Manager** - organize by female, track lock counts per male, follicle checks, key dates (Ovi, PLS), status flow (Active → Ovulated → Laid → Complete)
 - **Weight Logging** - quick-log from SnakeCard, full history modal with growth chart (recharts), auto-updates snake.weight_grams, recent weights visible on card
+- **Hatchling Tracking** - record sex, morph, genetics for each baby in clutch editor; babies stored as snake records linked via clutch_id
 
 ### Next Priorities
 1. **Feeding Log** - refusals, days since meal
