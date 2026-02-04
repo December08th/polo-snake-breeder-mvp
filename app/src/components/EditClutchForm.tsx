@@ -55,6 +55,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
       const letter = String.fromCharCode(65 + babies.length + i)
       const hatchDate = formData.actual_hatch_date || clutch.actual_hatch_date
       const { data } = await supabase.from('snakes').insert({
+        user_id: clutch.user_id,
         clutch_id: clutch.id,
         clutch_letter: letter,
         date_of_birth: hatchDate,
@@ -86,6 +87,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
     const letter = String.fromCharCode(65 + babies.length)
     const hatchDate = formData.actual_hatch_date || clutch.actual_hatch_date
     const { data } = await supabase.from('snakes').insert({
+      user_id: clutch.user_id,
       clutch_id: clutch.id,
       clutch_letter: letter,
       date_of_birth: hatchDate,
