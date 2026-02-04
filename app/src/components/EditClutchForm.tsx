@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import type { Clutch } from '../types/database'
+import type { Clutch, Snake } from '../types/database'
 import './ClutchForm.css'
 
 interface EditClutchFormProps {
@@ -13,6 +13,9 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [babies, setBabies] = useState<Snake[]>([])
+  const [loadingBabies, setLoadingBabies] = useState(false)
+  const [babiesExpanded, setBabiesExpanded] = useState(true)
 
   const [formData, setFormData] = useState({
     clutch_number: clutch.clutch_number,
@@ -25,6 +28,73 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
     hatch_count: clutch.hatch_count.toString(),
     remarks: clutch.remarks || '',
   })
+
+  useEffect(() => {
+    async function fetchBabies() {
+      if (!clutch.actual_hatch_date) return
+      setLoadingBabies(true)
+      const { data } = await supabase
+        .from('snakes')
+        .select('*')
+        .eq('clutch_id', clutch.id)
+        .order('clutch_letter', { ascending: true })
+      setBabies(data || [])
+      setLoadingBabies(false)
+    }
+    fetchBabies()
+  }, [clutch.id, clutch.actual_hatch_date])
+
+  async function initializeBabies() {
+    const count = parseInt(formData.hatch_count) || 0
+    if (count === 0) return
+
+    setLoadingBabies(true)
+    const newBabies: Snake[] = []
+
+    for (let i = 0; i < count; i++) {
+      const letter = String.fromCharCode(65 + babies.length + i)
+      const hatchDate = formData.actual_hatch_date || clutch.actual_hatch_date
+      const { data } = await supabase.from('snakes').insert({
+        clutch_id: clutch.id,
+        clutch_letter: letter,
+        date_of_birth: hatchDate,
+        year: hatchDate ? new Date(hatchDate).getFullYear() : null,
+        breeder_id: `${formData.clutch_number}-${letter}`,
+      }).select().single()
+
+      if (data) newBabies.push(data)
+    }
+
+    setBabies(prev => [...prev, ...newBabies])
+    setLoadingBabies(false)
+  }
+
+  async function handleBabyChange(babyId: string, field: string, value: string) {
+    setBabies(prev => prev.map(b =>
+      b.id === babyId ? { ...b, [field]: value || null } : b
+    ))
+
+    await supabase.from('snakes').update({ [field]: value || null }).eq('id', babyId)
+  }
+
+  async function handleDeleteBaby(babyId: string) {
+    setBabies(prev => prev.filter(b => b.id !== babyId))
+    await supabase.from('snakes').delete().eq('id', babyId)
+  }
+
+  async function addSingleBaby() {
+    const letter = String.fromCharCode(65 + babies.length)
+    const hatchDate = formData.actual_hatch_date || clutch.actual_hatch_date
+    const { data } = await supabase.from('snakes').insert({
+      clutch_id: clutch.id,
+      clutch_letter: letter,
+      date_of_birth: hatchDate,
+      year: hatchDate ? new Date(hatchDate).getFullYear() : null,
+      breeder_id: `${formData.clutch_number}-${letter}`,
+    }).select().single()
+
+    if (data) setBabies(prev => [...prev, data])
+  }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target
@@ -199,6 +269,61 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
             placeholder="e.g., badly kinked/euthanized x1"
           />
         </div>
+
+        {(clutch.actual_hatch_date || formData.actual_hatch_date) && (
+          <div className="babies-section">
+            <div className="babies-header" onClick={() => setBabiesExpanded(!babiesExpanded)}>
+              <h3>Hatchlings ({babies.length})</h3>
+              <span className="expand-icon">{babiesExpanded ? '▼' : '▶'}</span>
+            </div>
+
+            {babiesExpanded && (
+              <>
+                {loadingBabies ? (
+                  <p className="babies-loading">Loading...</p>
+                ) : babies.length === 0 ? (
+                  <button type="button" className="btn-init-babies" onClick={initializeBabies}>
+                    Create {formData.hatch_count || 0} baby slots
+                  </button>
+                ) : (
+                  <>
+                    {babies.map((baby) => (
+                      <div key={baby.id} className="baby-row">
+                        <span className="baby-letter">{baby.clutch_letter}</span>
+                        <select
+                          value={baby.sex || ''}
+                          onChange={(e) => handleBabyChange(baby.id, 'sex', e.target.value)}
+                        >
+                          <option value="">?</option>
+                          <option value="M">M</option>
+                          <option value="F">F</option>
+                        </select>
+                        <input
+                          type="text"
+                          placeholder="Morph"
+                          value={baby.morph || ''}
+                          onChange={(e) => handleBabyChange(baby.id, 'morph', e.target.value)}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Genetics"
+                          value={baby.genetics || ''}
+                          onChange={(e) => handleBabyChange(baby.id, 'genetics', e.target.value)}
+                        />
+                        <button type="button" className="baby-delete-btn" onClick={() => handleDeleteBaby(baby.id)}>
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                    <button type="button" className="btn-add-baby" onClick={addSingleBaby}>
+                      + Add Baby
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         {clutch.expected_hatch_date && (
           <p className="form-hint">Expected hatch: {new Date(clutch.expected_hatch_date).toLocaleDateString()}</p>
