@@ -145,12 +145,12 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 
 ---
 
-## Current State (04 Feb 2026)
+## Current State (12 Feb 2026)
 
 ### Done
 - User auth (email/password, confirmation flow)
 - Per-user data isolation (RLS)
-- Snake collection with status grouping (7 groups, sorted by weight)
+- Snake collection with status grouping (8 groups incl. Hatchlings, sorted by weight)
 - Add/Edit/Delete snake functionality
 - breeder_id field added - displays Polo's original IDs
 - All 45 snakes have breeder_ids populated
@@ -165,6 +165,7 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Pairing Manager** - organize by female, track lock counts per male, follicle checks, key dates (Ovi, PLS), status flow (Active → Ovulated → Laid → Complete)
 - **Weight Logging** - quick-log from SnakeCard, full history modal with growth chart (recharts), auto-updates snake.weight_grams, recent weights visible on card
 - **Hatchling Tracking** - record sex, morph, genetics for each baby in clutch editor; babies stored as snake records linked via clutch_id
+- **Hatchlings Status Group** - dedicated "Hatchlings" group in main collection; babies auto-assigned HATCHLING status on creation; existing clutch-linked snakes backfilled
 
 ### Next Priorities
 1. **Feeding Log** - refusals, days since meal
