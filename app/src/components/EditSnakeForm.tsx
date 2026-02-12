@@ -11,6 +11,7 @@ const ALL_STATUSES: { value: SnakeStatus; label: string }[] = [
   { value: 'M_HOLDBACK', label: 'Male Holdback' },
   { value: 'F_AVAILABLE', label: 'Female Available' },
   { value: 'M_AVAILABLE', label: 'Male Available' },
+  { value: 'HATCHLING', label: 'Hatchling' },
   { value: 'ON_HOLD', label: 'On Hold' },
 ]
 

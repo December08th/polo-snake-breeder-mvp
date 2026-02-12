@@ -23,6 +23,7 @@ const STATUS_GROUPS: { status: SnakeStatus; label: string }[] = [
   { status: 'M_HOLDBACK', label: 'Male Holdbacks' },
   { status: 'F_AVAILABLE', label: 'Females Available' },
   { status: 'M_AVAILABLE', label: 'Males Available' },
+  { status: 'HATCHLING', label: 'Hatchlings' },
   { status: 'ON_HOLD', label: 'On Hold' },
 ]
 
@@ -30,7 +31,7 @@ function groupSnakesByStatus(snakes: Snake[]): Map<SnakeStatus, Snake[]> {
   const groups = new Map<SnakeStatus, Snake[]>()
 
   for (const snake of snakes) {
-    const status = snake.status || 'ON_HOLD'
+    const status = snake.status || (snake.clutch_id ? 'HATCHLING' : 'ON_HOLD')
     const group = groups.get(status) || []
     group.push(snake)
     groups.set(status, group)
@@ -186,6 +187,7 @@ function App() {
   function handleEditClutchSuccess() {
     setEditingClutch(null)
     fetchClutches()
+    fetchSnakes()
   }
 
   function handleAddPairingSuccess() {

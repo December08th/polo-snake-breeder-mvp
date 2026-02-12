@@ -8,6 +8,7 @@ export type SnakeStatus =
   | 'M_HOLDBACK'
   | 'F_AVAILABLE'
   | 'M_AVAILABLE'
+  | 'HATCHLING'
   | 'ON_HOLD'
 
 export type RackSize = 'XL' | 'L' | 'S'

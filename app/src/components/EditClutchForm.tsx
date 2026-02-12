@@ -61,6 +61,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
         date_of_birth: hatchDate,
         year: hatchDate ? new Date(hatchDate).getFullYear() : null,
         breeder_id: `${formData.clutch_number}-${letter}`,
+        status: 'HATCHLING',
       }).select().single()
 
       if (data) newBabies.push(data)
@@ -93,6 +94,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
       date_of_birth: hatchDate,
       year: hatchDate ? new Date(hatchDate).getFullYear() : null,
       breeder_id: `${formData.clutch_number}-${letter}`,
+      status: 'HATCHLING',
     }).select().single()
 
     if (data) setBabies(prev => [...prev, data])
