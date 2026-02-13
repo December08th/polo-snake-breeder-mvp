@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import { QuickWeightLog } from './QuickWeightLog'
 import type { Snake, WeightLog } from '../types/database'
+import type { LineageSummary } from '../lib/lineage'
 import './SnakeCard.css'
 
 interface SnakeCardProps {
   snake: Snake
   weightLogs?: WeightLog[]
+  lineageSummary?: LineageSummary
   onClick: () => void
   onWeightUpdate: () => void
   onViewWeightHistory: () => void
+  onViewLineage?: () => void
 }
 
-export function SnakeCard({ snake, weightLogs = [], onClick, onWeightUpdate, onViewWeightHistory }: SnakeCardProps) {
+export function SnakeCard({ snake, weightLogs = [], lineageSummary, onClick, onWeightUpdate, onViewWeightHistory, onViewLineage }: SnakeCardProps) {
   const [showQuickLog, setShowQuickLog] = useState(false)
 
   // Display breeder_id if present, otherwise fall back to auto-generated snake_number
@@ -45,6 +48,11 @@ export function SnakeCard({ snake, weightLogs = [], onClick, onWeightUpdate, onV
   function handleQuickLogUpdate() {
     onWeightUpdate()
     setShowQuickLog(false)
+  }
+
+  function handleViewLineage(e: React.MouseEvent) {
+    e.stopPropagation()
+    onViewLineage?.()
   }
 
   return (
@@ -94,6 +102,26 @@ export function SnakeCard({ snake, weightLogs = [], onClick, onWeightUpdate, onV
             />
           )}
         </div>
+
+        {lineageSummary && (lineageSummary.hasParents || lineageSummary.offspringCount > 0) && (
+          <div className="lineage-summary">
+            {lineageSummary.hasParents && (
+              <p className="lineage-parents-summary">
+                Dam: {lineageSummary.damName}
+                {lineageSummary.sireNames.length > 0 && ` | Sire: ${lineageSummary.sireNames.join(', ')}`}
+                {lineageSummary.siblingCount > 0 && ` | ${lineageSummary.siblingCount} sibling${lineageSummary.siblingCount !== 1 ? 's' : ''}`}
+              </p>
+            )}
+            {lineageSummary.offspringCount > 0 && (
+              <p className="lineage-offspring-summary">
+                {lineageSummary.offspringCount} offspring from {lineageSummary.offspringClutchCount} clutch{lineageSummary.offspringClutchCount !== 1 ? 'es' : ''}
+              </p>
+            )}
+            <button className="btn-view-history" onClick={handleViewLineage}>
+              View Lineage
+            </button>
+          </div>
+        )}
 
         <p><strong>Status:</strong> {snake.status?.replace(/_/g, ' ') || 'Unknown'}</p>
         {snake.price && <p><strong>Price:</strong> ฿{snake.price.toLocaleString()}</p>}

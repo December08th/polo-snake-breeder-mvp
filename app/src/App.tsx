@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { supabase } from './lib/supabase'
 import { useAuth } from './contexts/AuthContext'
 import { Auth } from './components/Auth'
@@ -13,6 +13,8 @@ import { AddPairingForm } from './components/AddPairingForm'
 import { EditPairingForm } from './components/EditPairingForm'
 import { StatusSettingsModal, getHiddenStatuses } from './components/StatusSettingsModal'
 import { WeightLogModal } from './components/WeightLogModal'
+import { LineageModal } from './components/LineageModal'
+import { computeLineageSummaries } from './lib/lineage'
 import type { Snake, SnakeStatus, Clutch, PairingStatus, WeightLog } from './types/database'
 import './App.css'
 
@@ -60,6 +62,7 @@ function App() {
   const [editingClutch, setEditingClutch] = useState<Clutch | null>(null)
   const [editingPairing, setEditingPairing] = useState<PairingWithRelations | null>(null)
   const [weightLogSnake, setWeightLogSnake] = useState<Snake | null>(null)
+  const [lineageSnake, setLineageSnake] = useState<Snake | null>(null)
   const [collapsedGroups, setCollapsedGroups] = useState<Set<SnakeStatus>>(
     () => new Set(STATUS_GROUPS.map(g => g.status))
   )
@@ -224,6 +227,16 @@ function App() {
     })
   }
 
+  const lineageSummaries = useMemo(
+    () => computeLineageSummaries(snakes, pairings, clutches),
+    [snakes, pairings, clutches]
+  )
+
+  function handleLineageNavigate(snakeId: string) {
+    const target = snakes.find(s => s.id === snakeId)
+    if (target) setLineageSnake(target)
+  }
+
   if (authLoading) return <div className="loading">Loading...</div>
   if (!user) return <Auth />
   if (loading) return <div className="loading">Loading...</div>
@@ -299,9 +312,11 @@ function App() {
                           key={snake.id}
                           snake={snake}
                           weightLogs={weightLogs.get(snake.id) || []}
+                          lineageSummary={lineageSummaries.get(snake.id)}
                           onClick={() => setEditingSnake(snake)}
                           onWeightUpdate={handleWeightUpdate}
                           onViewWeightHistory={() => setWeightLogSnake(snake)}
+                          onViewLineage={() => setLineageSnake(snake)}
                         />
                       ))}
                     </div>
@@ -550,6 +565,14 @@ function App() {
           logs={weightLogs.get(weightLogSnake.id) || []}
           onClose={() => setWeightLogSnake(null)}
           onUpdate={handleWeightLogSuccess}
+        />
+      )}
+
+      {lineageSnake && (
+        <LineageModal
+          snake={lineageSnake}
+          onClose={() => setLineageSnake(null)}
+          onNavigateToSnake={handleLineageNavigate}
         />
       )}
     </div>

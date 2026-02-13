@@ -67,3 +67,22 @@
 .btn-view-history:hover {
   text-decoration: underline;
 }
+
+/* Lineage summary on card */
+.lineage-summary {
+  margin: 8px 0;
+  padding: 8px 0;
+  border-top: 1px solid #333;
+}
+
+.lineage-parents-summary {
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
+
+.lineage-offspring-summary {
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  margin-bottom: 2px;
+}
