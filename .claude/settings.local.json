@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"\" \"C:\\\\dev\\\\polo-snake-breeder-mvp\\\\pairing-feedback.html\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(powershell -command \"Set-Clipboard -Value ''https://polo-snake-mvp.netlify.app/pairing-feedback.html''\")",
+      "WebSearch",
+      "WebFetch(domain:cltch.io)",
+      "WebFetch(domain:www.cltch.io)",
+      "Bash(npm run build:*)",
+      "Bash(timeout 5 npm run dev:*)",
+      "WebFetch(domain:clutch.io)",
+      "WebFetch(domain:sneklog.com)",
+      "WebFetch(domain:husbandry.pro)",
+      "Bash(npm install:*)",
+      "Bash(pkill:*)",
+      "Bash(taskkill:*)",
+      "Bash(xargs kill:*)",
+      "Bash(netstat:*)",
+      "Bash(cmd.exe /c \"cd /d C:\\\\dev\\\\polo-snake-breeder-mvp\\\\app && npm run build\")",
+      "Bash(cmd.exe /c \"cd /d C:\\\\dev\\\\polo-snake-breeder-mvp\\\\app && npx tsc --noEmit 2>&1\")",
+      "Bash(cmd.exe /c \"cd /d C:\\\\dev\\\\polo-snake-breeder-mvp\\\\app && npm run build 2>&1 && echo BUILD_SUCCESS || echo BUILD_FAILED\")",
+      "Bash(powershell.exe -Command \"Set-Location ''C:\\\\dev\\\\polo-snake-breeder-mvp\\\\app''; npm run build 2>&1 | Out-String\")",
+      "Bash(npm run dev:*)"
+    ]
+  }
+}
