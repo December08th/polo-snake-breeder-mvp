@@ -521,6 +521,7 @@ function App() {
       {showAddClutchForm && (
         <AddClutchForm
           userId={user.id}
+          pairings={pairings}
           onSuccess={handleAddClutchSuccess}
           onCancel={() => setShowAddClutchForm(false)}
         />
@@ -529,6 +530,7 @@ function App() {
       {editingClutch && (
         <EditClutchForm
           clutch={editingClutch}
+          pairings={pairings}
           onSuccess={handleEditClutchSuccess}
           onCancel={() => setEditingClutch(null)}
         />

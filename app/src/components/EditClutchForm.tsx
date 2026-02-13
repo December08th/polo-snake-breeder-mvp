@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Clutch, Snake } from '../types/database'
+import type { PairingWithRelations } from './PairingCard'
 import './ClutchForm.css'
 
 interface EditClutchFormProps {
   clutch: Clutch
+  pairings: PairingWithRelations[]
   onSuccess: () => void
   onCancel: () => void
 }
 
-export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormProps) {
+export function EditClutchForm({ clutch, pairings, onSuccess, onCancel }: EditClutchFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -20,6 +22,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
   const [formData, setFormData] = useState({
     clutch_number: clutch.clutch_number,
     lay_date: clutch.lay_date || '',
+    pairing_id: clutch.pairing_id || '',
     egg_count: clutch.egg_count.toString(),
     fertile_count: clutch.fertile_count.toString(),
     slug_count: clutch.slug_count.toString(),
@@ -100,7 +103,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
     if (data) setBabies(prev => [...prev, data])
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -123,6 +126,7 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
           actual_hatch_date: formData.actual_hatch_date || null,
           hatch_count: formData.hatch_count ? parseInt(formData.hatch_count) : 0,
           remarks: formData.remarks || null,
+          pairing_id: formData.pairing_id || null,
         })
         .eq('id', clutch.id)
 
@@ -185,6 +189,28 @@ export function EditClutchForm({ clutch, onSuccess, onCancel }: EditClutchFormPr
               onChange={handleChange}
             />
           </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="pairing_id">Pairing</label>
+          <select
+            id="pairing_id"
+            name="pairing_id"
+            value={formData.pairing_id}
+            onChange={handleChange}
+          >
+            <option value="">None (no pairing linked)</option>
+            {pairings.map(p => {
+              const female = p.female?.name || 'Unknown'
+              const femaleId = p.female?.breeder_id ? ` (${p.female.breeder_id})` : ''
+              const males = p.pairing_males?.map(pm => pm.male?.name || 'Unknown').join(', ') || 'Unknown'
+              return (
+                <option key={p.id} value={p.id}>
+                  ♀ {female}{femaleId} × ♂ {males} — {p.status}
+                </option>
+              )
+            })}
+          </select>
         </div>
 
         <div className="form-row form-row-4">

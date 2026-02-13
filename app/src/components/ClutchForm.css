@@ -46,7 +46,8 @@
 }
 
 .clutch-form .form-group input,
-.clutch-form .form-group textarea {
+.clutch-form .form-group textarea,
+.clutch-form .form-group select {
   width: 100%;
   padding: 10px 12px;
   background: #1a1a1a;
@@ -58,7 +59,8 @@
 }
 
 .clutch-form .form-group input:focus,
-.clutch-form .form-group textarea:focus {
+.clutch-form .form-group textarea:focus,
+.clutch-form .form-group select:focus {
   outline: none;
   border-color: #4ade80;
 }

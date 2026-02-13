@@ -1,20 +1,23 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import type { PairingWithRelations } from './PairingCard'
 import './ClutchForm.css'
 
 interface AddClutchFormProps {
   userId: string
+  pairings: PairingWithRelations[]
   onSuccess: () => void
   onCancel: () => void
 }
 
-export function AddClutchForm({ userId, onSuccess, onCancel }: AddClutchFormProps) {
+export function AddClutchForm({ userId, pairings, onSuccess, onCancel }: AddClutchFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     clutch_number: '',
     lay_date: '',
+    pairing_id: '',
     egg_count: '',
     fertile_count: '',
     slug_count: '',
@@ -22,7 +25,7 @@ export function AddClutchForm({ userId, onSuccess, onCancel }: AddClutchFormProp
     remarks: '',
   })
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
@@ -42,6 +45,7 @@ export function AddClutchForm({ userId, onSuccess, onCancel }: AddClutchFormProp
         slug_count: formData.slug_count ? parseInt(formData.slug_count) : 0,
         kink_count: formData.kink_count ? parseInt(formData.kink_count) : 0,
         remarks: formData.remarks || null,
+        pairing_id: formData.pairing_id || null,
       })
 
       if (error) throw error
@@ -85,6 +89,28 @@ export function AddClutchForm({ userId, onSuccess, onCancel }: AddClutchFormProp
               required
             />
           </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="pairing_id">Pairing</label>
+          <select
+            id="pairing_id"
+            name="pairing_id"
+            value={formData.pairing_id}
+            onChange={handleChange}
+          >
+            <option value="">None (no pairing linked)</option>
+            {pairings.map(p => {
+              const female = p.female?.name || 'Unknown'
+              const femaleId = p.female?.breeder_id ? ` (${p.female.breeder_id})` : ''
+              const males = p.pairing_males?.map(pm => pm.male?.name || 'Unknown').join(', ') || 'Unknown'
+              return (
+                <option key={p.id} value={p.id}>
+                  ♀ {female}{femaleId} × ♂ {males} — {p.status}
+                </option>
+              )
+            })}
+          </select>
         </div>
 
         <div className="form-row form-row-4">

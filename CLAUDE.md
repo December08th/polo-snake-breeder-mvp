@@ -69,9 +69,14 @@ mindmap
         Hatchling tracking
           In clutch editor
           Sex/morph/genetics per baby
+        Lineage tracking
+          Card summary + modal
+          Parents/siblings/offspring
+          Clickable navigation
       Not Yet Built
         Feeding log UI
         Photo uploads
+        Lineage Phase 2 visual tree
     URLs
       Live: polo-snake-mvp.netlify.app
       Supabase: guqxoychegqxreywfinv
@@ -145,7 +150,7 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 
 ---
 
-## Current State (12 Feb 2026)
+## Current State (13 Feb 2026)
 
 ### Done
 - User auth (email/password, confirmation flow)
@@ -166,10 +171,12 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Weight Logging** - quick-log from SnakeCard, full history modal with growth chart (recharts), auto-updates snake.weight_grams, recent weights visible on card
 - **Hatchling Tracking** - record sex, morph, genetics for each baby in clutch editor; babies stored as snake records linked via clutch_id
 - **Hatchlings Status Group** - dedicated "Hatchlings" group in main collection; babies auto-assigned HATCHLING status on creation; existing clutch-linked snakes backfilled
+- **Lineage Tracking (Phase 1)** - compact parentage/offspring summary on SnakeCard + LineageModal with parents, siblings, offspring sections; clickable names navigate the family tree; no schema changes (uses clutch → pairing → snake chain)
 
 ### Next Priorities
 1. **Feeding Log** - refusals, days since meal
 2. **Photo uploads**
+3. **Lineage Phase 2** - visual family tree diagram
 
 ---
 
@@ -215,6 +222,7 @@ Polo's original snake IDs from his spreadsheet. Format varies:
 | Auth context | `app/src/contexts/AuthContext.tsx` |
 | Components | `app/src/components/` |
 | Weight logging | `app/src/components/WeightLogModal.tsx`, `WeightChart.tsx`, `QuickWeightLog.tsx` |
+| Lineage | `app/src/lib/lineage.ts`, `app/src/components/LineageModal.tsx` |
 | Migrations | `supabase/migrations/` |
 | Requirements | `REQUIREMENTS.md` |
 | Schema docs | `SCHEMA.md` |
