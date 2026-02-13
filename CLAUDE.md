@@ -172,6 +172,7 @@ Use `createClient(url, serviceKey)` from `@supabase/supabase-js`. The service ke
 - **Hatchling Tracking** - record sex, morph, genetics for each baby in clutch editor; babies stored as snake records linked via clutch_id
 - **Hatchlings Status Group** - dedicated "Hatchlings" group in main collection; babies auto-assigned HATCHLING status on creation; existing clutch-linked snakes backfilled
 - **Lineage Tracking (Phase 1)** - compact parentage/offspring summary on SnakeCard + LineageModal with parents, siblings, offspring sections; clickable names navigate the family tree; no schema changes (uses clutch → pairing → snake chain)
+- **Create Clutch from Pairing** - "Create Clutch" button on pairing editor; opens Add Clutch form with pairing pre-selected; saving auto-completes the pairing to COMPLETE status
 
 ### Next Priorities
 1. **Feeding Log** - refusals, days since meal

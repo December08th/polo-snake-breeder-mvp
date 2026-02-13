@@ -84,7 +84,7 @@ export function AddSnakeForm({ userId, onSuccess, onCancel }: AddSnakeFormProps)
 
         <div className="form-row">
           <div className="form-group">
-            <label htmlFor="breeder_id">Breeder ID</label>
+            <label htmlFor="breeder_id">Snake ID</label>
             <input
               type="text"
               id="breeder_id"

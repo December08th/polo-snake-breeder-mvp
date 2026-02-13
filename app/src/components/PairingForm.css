@@ -58,6 +58,10 @@
   font-family: inherit;
 }
 
+.pairing-form .form-group input[type="date"] {
+  color-scheme: dark;
+}
+
 .pairing-form .form-group input:focus,
 .pairing-form .form-group select:focus,
 .pairing-form .form-group textarea:focus {

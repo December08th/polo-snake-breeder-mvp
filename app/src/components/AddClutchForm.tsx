@@ -17,7 +17,7 @@ export function AddClutchForm({ userId, pairings, defaultPairingId, onSuccess, o
 
   const [formData, setFormData] = useState({
     clutch_number: '',
-    lay_date: '',
+    lay_date: new Date().toISOString().split('T')[0],
     pairing_id: defaultPairingId || '',
     egg_count: '',
     fertile_count: '',

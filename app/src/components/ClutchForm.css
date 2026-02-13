@@ -58,6 +58,10 @@
   font-family: inherit;
 }
 
+.clutch-form .form-group input[type="date"] {
+  color-scheme: dark;
+}
+
 .clutch-form .form-group input:focus,
 .clutch-form .form-group textarea:focus,
 .clutch-form .form-group select:focus {
