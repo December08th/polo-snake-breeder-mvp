@@ -6,18 +6,19 @@ import './ClutchForm.css'
 interface AddClutchFormProps {
   userId: string
   pairings: PairingWithRelations[]
+  defaultPairingId?: string | null
   onSuccess: () => void
   onCancel: () => void
 }
 
-export function AddClutchForm({ userId, pairings, onSuccess, onCancel }: AddClutchFormProps) {
+export function AddClutchForm({ userId, pairings, defaultPairingId, onSuccess, onCancel }: AddClutchFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     clutch_number: '',
     lay_date: '',
-    pairing_id: '',
+    pairing_id: defaultPairingId || '',
     egg_count: '',
     fertile_count: '',
     slug_count: '',

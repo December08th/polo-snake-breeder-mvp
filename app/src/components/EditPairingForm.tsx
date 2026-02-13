@@ -8,6 +8,7 @@ interface EditPairingFormProps {
   pairing: PairingWithRelations
   onSuccess: () => void
   onCancel: () => void
+  onCreateClutch: (pairingId: string) => void
 }
 
 interface MaleEntry {
@@ -23,7 +24,7 @@ const STATUS_OPTIONS: { value: PairingStatus; label: string }[] = [
   { value: 'COMPLETE', label: 'Complete' },
 ]
 
-export function EditPairingForm({ pairing, onSuccess, onCancel }: EditPairingFormProps) {
+export function EditPairingForm({ pairing, onSuccess, onCancel, onCreateClutch }: EditPairingFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [females, setFemales] = useState<Snake[]>([])
@@ -455,6 +456,16 @@ export function EditPairingForm({ pairing, onSuccess, onCancel }: EditPairingFor
             {loading ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
+
+        {status !== 'COMPLETE' && (
+          <button
+            type="button"
+            className="btn-create-clutch"
+            onClick={() => onCreateClutch(pairing.id)}
+          >
+            + Create Clutch
+          </button>
+        )}
 
         <div className="delete-section">
           {!showDeleteConfirm ? (

@@ -288,6 +288,25 @@
   cursor: not-allowed;
 }
 
+/* Create Clutch button */
+.pairing-form .btn-create-clutch {
+  width: 100%;
+  background: transparent;
+  color: #4ade80;
+  border: 1px dashed #4ade80;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 24px;
+}
+
+.pairing-form .btn-create-clutch:hover {
+  background: rgba(74, 222, 128, 0.1);
+}
+
 /* Delete section */
 .pairing-form .delete-section {
   margin-top: 24px;

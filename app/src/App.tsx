@@ -70,6 +70,7 @@ function App() {
   const [hatchedCollapsed, setHatchedCollapsed] = useState(true)
   const [pairingsCollapsed, setPairingsCollapsed] = useState<Set<PairingStatus>>(() => new Set())
   const [showStatusSettings, setShowStatusSettings] = useState(false)
+  const [clutchFromPairingId, setClutchFromPairingId] = useState<string | null>(null)
   const [hiddenStatuses, setHiddenStatuses] = useState<Set<SnakeStatus>>(() => new Set(getHiddenStatuses()))
 
   useEffect(() => {
@@ -182,8 +183,24 @@ function App() {
     fetchWeightLogs()
   }
 
-  function handleAddClutchSuccess() {
+  function handleCreateClutchFromPairing(pairingId: string) {
+    setClutchFromPairingId(pairingId)
+    setEditingPairing(null)
+    setShowAddClutchForm(true)
+  }
+
+  async function handleAddClutchSuccess() {
     setShowAddClutchForm(false)
+
+    if (clutchFromPairingId) {
+      await supabase
+        .from('pairings')
+        .update({ status: 'COMPLETE' })
+        .eq('id', clutchFromPairingId)
+      setClutchFromPairingId(null)
+      fetchPairings()
+    }
+
     fetchClutches()
   }
 
@@ -522,8 +539,9 @@ function App() {
         <AddClutchForm
           userId={user.id}
           pairings={pairings}
+          defaultPairingId={clutchFromPairingId}
           onSuccess={handleAddClutchSuccess}
-          onCancel={() => setShowAddClutchForm(false)}
+          onCancel={() => { setShowAddClutchForm(false); setClutchFromPairingId(null) }}
         />
       )}
 
@@ -558,6 +576,7 @@ function App() {
           pairing={editingPairing}
           onSuccess={handleEditPairingSuccess}
           onCancel={() => setEditingPairing(null)}
+          onCreateClutch={handleCreateClutchFromPairing}
         />
       )}
 
