@@ -334,19 +334,14 @@ export function EditClutchForm({ clutch, pairings, onSuccess, onCancel }: EditCl
                           value={baby.morph || ''}
                           onChange={(e) => handleBabyChange(baby.id, 'morph', e.target.value)}
                         />
-                        <input
-                          type="text"
-                          placeholder="Genetics"
-                          value={baby.genetics || ''}
-                          onChange={(e) => handleBabyChange(baby.id, 'genetics', e.target.value)}
-                        />
+
                         <button type="button" className="baby-delete-btn" onClick={() => handleDeleteBaby(baby.id)}>
                           ×
                         </button>
                       </div>
                     ))}
                     <button type="button" className="btn-add-baby" onClick={addSingleBaby}>
-                      + Add Baby
+                      + Add Hatchling
                     </button>
                   </>
                 )}

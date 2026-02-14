@@ -92,6 +92,7 @@ mindmap
 | Run locally | `cd app && npm run dev` |
 | Local URL | http://localhost:5175 |
 | Live URL | https://polo-snake-mvp.netlify.app |
+| Deploy | Auto-deploys from GitHub on push (Netlify) |
 | Supabase project | guqxoychegqxreywfinv |
 | Package manager | npm |
 | .env location | `app/.env` |
